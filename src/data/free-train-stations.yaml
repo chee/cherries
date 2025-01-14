@@ -1,0 +1,12 @@
+# status YES|SOMETIMES|NO
+- name: Peckham Rye
+  status: YES
+  note: push the wall and exit
+  date: 2024-04-26
+  id: "peckham-rye"
+- name: North Acton
+  status: SOMETIMES
+  note: it was open when we checked, but just open barriers, might close
+    sometimes
+  date: 2024-04-27
+  id: "north-acton"

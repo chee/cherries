@@ -1,0 +1,87 @@
+---
+import BaseHead from "./BaseHead.astro"
+
+interface Props {
+	title?: string | undefined
+	description?: string | undefined
+	image?: string
+}
+
+const {title, description, image = "/favicon.png"} = Astro.props
+---
+
+<script type="importmap" is:inline>
+	{
+		"imports": {
+			"solid": "/eleventy-cherries-support/solid.js",
+			"solid-js": "/eleventy-cherries-support/solid-js/dist/solid.js",
+			"solid-js/web": "/eleventy-cherries-support/solid-js/web/dist/web.js",
+			"solid-js/store": "/eleventy-cherries-support/solid-js/store/dist/store.js",
+			"solid-js/html": "/eleventy-cherries-support/solid-js/html/dist/html.js",
+			"@solidjs/meta": "/eleventy-cherries-support/@solidjs/meta/dist/index.js",
+			"@automerge/automerge-repo/slim": "/eleventy-cherries-support/automerge-repo-slim.js",
+			"@automerge/automerge-repo-indexeddb": "/eleventy-cherries-support/automerge-repo-indexeddb.js",
+			"@automerge/automerge-repo-websocket": "/eleventy-cherries-support/automerge-repo-websocket.js",
+			"automerge-repo-solid-primitives": "/eleventy-cherries-support/automerge-repo-solid-primitives.js",
+			"cabbages": "/eleventy-cherries-support/cabbages/output/cabbages.js"
+		}
+	}
+</script>
+<BaseHead title={title ?? ""} description={description ?? ""} image={image} />
+<script type="module" is:inline>
+	window.withAutomergeRepo = fn => {
+		if (window.repo) {
+			fn(window.repo, window.AutomergeRepo)
+		} else {
+			document.addEventListener("repo", event =>
+				fn(event.detail.repo, event.detail.Repo)
+			)
+		}
+	}
+
+	import * as AutomergeRepo from "@automerge/automerge-repo/slim"
+	import {BrowserWebSocketClientAdapter} from "@automerge/automerge-repo-websocket"
+	import {IndexedDBStorageAdapter} from "@automerge/automerge-repo-indexeddb"
+	await AutomergeRepo.initializeWasm(
+		fetch("/eleventy-cherries-support/automerge.wasm")
+	)
+	let repo = new AutomergeRepo.Repo({
+		storage: new IndexedDBStorageAdapter(),
+		network: [new BrowserWebSocketClientAdapter("wss://galaxy.observer")],
+	})
+	window.AutomergeRepo = AutomergeRepo
+	window.repo = repo
+	await repo.networkSubsystem.whenReady()
+	document.dispatchEvent(
+		new CustomEvent("repo", {detail: {repo, AutomergeRepo}})
+	)
+</script>
+
+<script>
+	function features() {
+		let featureflags = new URLSearchParams(location.search.slice(1))
+		let doc = document.documentElement
+		for (let [flag, value] of featureflags.entries()) {
+			localStorage.setItem(flag, value)
+		}
+		for (let [flag, value] of Object.entries(localStorage)) {
+			try {
+				doc.setAttribute(flag, value)
+			} catch {}
+		}
+		let theme = getComputedStyle(doc).getPropertyValue("--meta-theme-color")
+		const q = doc.querySelector('[name="theme-color"]')
+		q && (q.content = theme)
+	}
+	features()
+	window._features = features
+	window.addEventListener("popstate", () => {
+		setTimeout(() => features())
+	})
+</script>
+
+<script type="module" src="/eleventy-cherries-support/is-land.js"></script>
+<link
+	rel="stylesheet"
+	href="/eleventy-cherries-support/eleventy-cherries.css"
+/>

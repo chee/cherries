@@ -1,0 +1,120 @@
+<style is:inline>
+	mouse-trail {
+		pointer-events: none;
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		font-size: 40px;
+		height: 1em;
+		width: 1em;
+		transform: scale(0.1);
+		transition:
+			transform 0.2s linear,
+			opacity 0.5s ease;
+	}
+</style>
+
+<script>
+	function addMouseTrail() {
+		let timeout = 200
+		let spacing = 10
+		let lastX = 0
+		let lastY = 0
+		let getRandom = (items: string[]) =>
+			items[Math.floor(Math.random() * items.length)]
+		let pause = false
+
+		let trailers = `
+            💖 💞 🧡 💛 💚 💙 🩵 💜 🩷 💖 💕 💛 🍉 🍊 🍌 🍍 🍐 🍑 🍒 🍓 🥝 🍅 🥑 🥑
+			🌈 🐰 🦊 🐭 🐹 🐰 🐦 🐧 🦆 🦆 🌸 🌸 🌸 🌸 🌸 💮 🏵 🌺 🌻 🌼 🍄
+			🌟 🍇 🍈 🍉 🍊 🍋 🍋‍🟩 🍌 🍍 🥭 🍎 🍏 🍐 🍑 🍒 🍒 🍒 🍒 🍓 🫐 🥝
+			🌺 🍄 🍄 🍅 🍆 🥕 🌽 🍑 🍅 🍒 🍒 🍒 🥝 🍇 🍉 🍉 🍉 🍌 🍊 🍍 🫐 
+			🍅 🫒 🥥 🍉 🍉 🌭 🍒 🌸 🌸 🪴 🦦 🧚 🐰 ♥️ 🦔  🍊 🍍 🦋 🍓 😻
+	`.split(/\s+/)
+
+		let rando = (from: number, to: number) =>
+			((Math.random() * (to - from)) | 0) + from
+
+		let trailElements: HTMLElement[] = []
+
+		let createTrailer = () => {
+			let edibleTrailer = trailElements.find(
+				trailer => trailer.dataset.edible == "yeah"
+			)
+
+			let trailer =
+				edibleTrailer ||
+				(trailElements.unshift(document.createElement("mouse-trail")),
+				trailElements[0])
+
+			trailer.dataset.edible = "no"
+
+			trailer.innerHTML = getRandom(trailers)
+			trailer.style.top = rando(-10, 10) + "px"
+			trailer.style.left = rando(-10, 10) + "px"
+			return trailer
+		}
+
+		let base = 1
+
+		window.addEventListener("keydown", event => {
+			if (event.shiftKey) base = rando(2, 4)
+		})
+		window.addEventListener("keyup", event => {
+			if (!event.shiftKey) base = 1
+		})
+		window.addEventListener("blur", () => {
+			base = 0.5
+		})
+
+		let trail = (x: number, y: number, dx: number, dy: number) => {
+			let nx = dx - spacing
+			let ny = dy - spacing
+			let s = Math.min(Math.max(nx, ny) / 100, 1)
+			let trailer = createTrailer()
+			trailer.style.opacity = "1"
+			trailer.style.transform = `translate(${x}px, ${y}px) scale(${base + s})`
+
+			requestAnimationFrame(() => {
+				document.body.append(trailer)
+			})
+
+			setTimeout(() => {
+				requestAnimationFrame(() => {
+					trailer.style.transform = `translate(${x}px, ${y}px) scale(0.1)`
+					trailer.style.opacity = "0"
+				})
+			}, 15)
+
+			setTimeout(() => (trailer.dataset.edible = "yeah"), timeout)
+		}
+
+		/**
+		 * @returns the difference
+		 */
+		let delta = (a: number, b: number) =>
+			Math.abs(Math.max(a, b) - Math.min(a, b))
+
+		let handleMouseMovement = (event: MouseEvent) => {
+			if (pause) return
+			let x = event.pageX
+			let y = event.pageY
+			let dx = delta(x, lastX)
+			let dy = delta(y, lastY)
+
+			if (dx > spacing || dy > spacing) {
+				trail(x, y, dx, dy)
+			}
+			;[lastX, lastY] = [x, y]
+		}
+
+		window.addEventListener("mousedown", () => {
+			pause = true
+			window.addEventListener("mouseup", () => (pause = false), {once: true})
+		})
+
+		window.addEventListener("mousemove", handleMouseMovement, {passive: true})
+	}
+
+	addMouseTrail()
+</script>

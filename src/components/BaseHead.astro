@@ -1,28 +1,83 @@
 ---
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
-import '../styles/global.css';
+import "../styles/global.css"
+import MouseTrail from "./MouseTrail.astro"
 
 interface Props {
-	title: string;
-	description: string;
-	image?: string;
+	title: string
+	description: string
+	image?: string
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const {title, description, image = "/favicon.png"} = Astro.props
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link
+	rel="icon"
+	type="image/svg+xml"
+	href=`/favicon${import.meta.env.DEV ? ".dev" : ""}.svg`
+/>
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font preloads -->
-<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
-<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
+<link
+	rel="preload"
+	href="/fonts/iosevka-qp-bold.woff2"
+	as="font"
+	type="font/woff"
+	crossorigin
+/>
+<link
+	rel="preload"
+	href="/fonts/iosevka-qp-bolditalic.woff2"
+	as="font"
+	type="font/woff"
+	crossorigin
+/>
+<link
+	rel="preload"
+	href="/fonts/iosevka-qp-italic.woff2"
+	as="font"
+	type="font/woff"
+	crossorigin
+/>
+<link
+	rel="preload"
+	href="/fonts/iosevka-qp-light.woff2"
+	as="font"
+	type="font/woff"
+	crossorigin
+/>
+<link
+	rel="preload"
+	href="/fonts/iosevka-qp-lightitalic.woff2"
+	as="font"
+	type="font/woff"
+	crossorigin
+/>
+<link
+	rel="preload"
+	href="/fonts/iosevka-qp-regular.woff2"
+	as="font"
+	type="font/woff"
+	crossorigin
+/>
+<link
+	rel="preload"
+	href="/fonts/jost-vf.ttf"
+	as="font"
+	type="font/ttf"
+	crossorigin
+/>
+
+<link rel="me" href="https://github.com/chee" />
+<link rel="me" href="{{metadata.url}}/chee-rabbits" />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
@@ -45,3 +100,4 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+<MouseTrail />

@@ -1,0 +1,31 @@
+{
+  "name": "cabbages",
+  "version": "0.1.0",
+  "description": "secret patch utility",
+  "main": "output/cabbages.js",
+  "types": "output/cabbages.d.ts",
+  "type": "module",
+  "keywords": [
+    "diff",
+    "patch",
+    "pojo",
+    "automerge",
+    "braid"
+  ],
+  "author": "chee",
+  "license": "MIT",
+  "devDependencies": {
+    "@automerge/automerge": "^2.2.5",
+    "@automerge/automerge-repo": "^1.2.1",
+    "@types/node": "^20.14.11",
+    "tsup": "^8.2.2",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3"
+  },
+  "scripts": {
+    "prepublish": "pnpm mk",
+    "test": "node --import=tsx cabbages.test.ts; pnpm -r test",
+    "mk": "tsup cabbages.ts --format esm --dts -d output",
+    "w": "pnpm mk --watch"
+  }
+}

@@ -1,0 +1,79 @@
+---
+import type {CollectionEntry} from "astro:content"
+
+type Props = CollectionEntry<"documents" | "eleventyCherries">["data"] & {
+	id: string
+	collection: string
+}
+const {id, date} = Astro.props
+
+const DEFAULT_TIMEZONE = "Europe/London"
+const DEFAULT_DATE_LOCALE = "en-GB"
+
+const timezone =
+	"timezone" in Astro.props
+		? Astro.props.timezone || DEFAULT_TIMEZONE
+		: DEFAULT_TIMEZONE
+
+const dateLocale =
+	"dateLocale" in Astro.props
+		? Astro.props.dateLocale || DEFAULT_DATE_LOCALE
+		: DEFAULT_DATE_LOCALE
+
+const toString = (
+	date: Date | null,
+	locale: Intl.Locale["baseName"],
+	timeZone: Intl.DateTimeFormatOptions["timeZone"]
+) => {
+	if (!date) return ""
+	return new Date(date)
+		.toLocaleString(locale, {
+			timeZone,
+			hour: "numeric",
+			minute: "2-digit",
+			hour12: true,
+			day: "numeric",
+			weekday: "short",
+			year: "numeric",
+			month: "short",
+		})
+		.replace(/, /g, " ")
+		.replace(/(\d) ([ap])/, (_, dig, ap) => dig + ap)
+}
+
+const toTimeZoneName = (
+	date: Date | null,
+	locale: Intl.Locale["baseName"],
+	timeZone: Intl.DateTimeFormatOptions["timeZone"],
+	timeZoneName: Intl.DateTimeFormatOptions["timeZoneName"] = "long"
+) => {
+	if (!date) return
+	date = new Date(date)
+	if (Number.isNaN(date)) {
+		return ""
+	}
+	let fmt = new Intl.DateTimeFormat(locale, {
+		timeZone,
+		timeZoneName,
+	})
+	let parts = fmt.formatToParts(date)
+	let zone = parts.find(part => part.type == "timeZoneName") || {
+		value: "",
+	}
+	return zone.value
+}
+---
+
+<div class="entry-bar full-width">
+	<a href={id} rel="bookmark" class="url u-url">
+		<time class="dt-published" datetime="2025-01-12T00:00:00.000Z">
+			{toString(date, dateLocale, timezone)}
+		</time>
+		<span class="entry-bar__timezone entry-bar__timezone--long">
+			{toTimeZoneName(date, dateLocale, timezone)}
+		</span>
+		<span class="entry-bar__timezone entry-bar__timezone--short">
+			{toTimeZoneName(date, "en-ca", timezone, "short")}
+		</span>
+	</a>
+</div>

@@ -1,0 +1,65 @@
+# status: YES ACCESSIBLE-OPEN ACCESSIBLE-KEY-NQA ACCESSIBLE-KEY-QA NOPE
+- name: Brindisa Tapas
+  kind: Spanish Restaurant
+  address: 18-20 Southwark Street, London, GB SE1 1TJ
+  lat: 51.505020
+  lon: -0.090480
+  status: YES
+  date: 2024-04-25
+  reporter: chee
+  id: "brindisa-tapas"
+- name: The Railway
+  kind: Pub
+  address: 16 Blackheath Village, London, GB SE3 9LE
+  lat: 51.465430
+  lon: 0.008970
+  status: ACCESSIBLE-KEY-NQA
+  date: 2023-06-28
+  reporter: chee
+  id: "the-railway"
+- name: Bussey Building
+  kind: Space
+  address: 133 Copeland Road, Peckham, London, SE15 3SN, England
+  lat: 51.470090
+  lon: -0.064170
+  status: YES
+  date: 2024-04-26
+  reporter: chee
+  id: "bussey-building"
+- name: Brewmaster
+  kind: Pub
+  address: 15–23 Cranbourn St London England WC2H
+  status: NOPE
+  lat: 51.51145107695347
+  lon: -0.1282505358197773
+  date: 2024-04-27
+  reporter: chee
+  id: "brewmaster"
+- name: Chamisse
+  kind: Lebanese Restaurant
+  address: 55 Gray's Inn Road, London, GB WC1X 8PP
+  lat: 51.5221617
+  lon: -0.11399
+  date: 2024-05-01
+  status: YES
+  reporter: zoozoo
+  id: "chamisse"
+- name: Market Porter
+  kind: Pub
+  address: 9 Stoney Street, London Bridge,SE1 9AA
+  lat: 51.5053296
+  lon: -0.09134150000000001
+  status: ACCESSIBLE-KEY-NQA
+  date: 2024-05-02
+  reporter: chee
+  id: "market-porter"
+- name: Five Guys Park Royal
+  kind: Burger Restaurant
+  address: Kendal Avenue, Kendal Avenue, London, GB W3 0PA
+  lat: 51.523380
+  lon: -0.278630
+  status: YES
+  date: 2024-05-12
+  reporter: zaina
+  code: 2451
+  id: "five-guys-park-royal"

@@ -1,138 +1,213 @@
-/*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
+@font-face {
+	font-family: Jost;
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: fallback;
+	src: url("/fonts/jost-vf.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: Jost;
+	font-style: italic;
+	font-weight: 100 900;
+	font-display: fallback;
+	src: url("/fonts/jost-vf.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Iosevka QP";
+	font-style: normal;
+	font-weight: 100 200;
+	font-display: fallback;
+	src: url("/fonts/iosevka-qp-light.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka QP";
+	font-style: normal;
+	font-weight: 300 400;
+	font-display: fallback;
+	src: url("/fonts/iosevka-qp-regular.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka QP";
+	font-style: normal;
+	font-weight: 500 900;
+	font-display: fallback;
+	src: url("/fonts/iosevka-qp-bold.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka QP";
+	font-style: italic;
+	font-weight: 100 200;
+	font-display: fallback;
+	src: url("/fonts/iosevka-qp-lightitalic.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka QP";
+	font-style: italic;
+	font-weight: 300 400;
+	font-display: fallback;
+	src: url("/fonts/iosevka-qp-italic.woff2") format("woff2");
+}
+@font-face {
+	font-family: "Iosevka QP";
+	font-style: italic;
+	font-weight: 500 900;
+	font-display: fallback;
+	src: url("/fonts/iosevka-qp-bolditalic.woff2") format("woff2");
+}
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
-}
-@font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-regular.woff') format('woff');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-@font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-bold.woff') format('woff');
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
-body {
-	font-family: 'Atkinson', sans-serif;
-	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
-}
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
+	--green: #33ffcc;
+	--blue: #33ccff;
+	--dark-blue: #03c;
+	--red: #ff2a50;
+	--orange: #ff7c7a;
+	--mustard: #fe8;
+	--lemon: #ff8;
+	--f-blue: #2269ff;
+	--cherries-fill: #ffe9ed;
+	--cherries-line: #cc2959;
+
+	--fill: white;
+	--line: black;
+	--offset: color-mix(in srgb, var(--fill) 96%, var(--link-line));
+
+	--page-fill: var(--fill);
+	--page-line: var(--line);
+	--shaded-fill: color-mix(in srgb, var(--fill) 90%, var(--line));
+	--shaded-line: var(--line);
+	--banner-fill: var(--shaded-fill);
+	--meta-theme-color: var(--banner-fill);
+	--banner-line: var(--shaded-line);
+	--cherry-colour: var(--cherries-line);
+	--contrast-fill: var(--line);
+	--contrast-line: var(--fill);
+
+	--link-fill: transparent;
+	--link-line: var(--f-blue);
+
+	--entry-fill: var(--fill);
+	--entry-line: var(--line);
+
+	--entry-bar-fill: var(--contrast-fill);
+	--entry-bar-line: var(--contrast-line);
+
+	--entry-shadow: color-mix(in srgb, var(--page-line) 20%, var(--page-fill));
+
+	--li-1: rgba(255, 255, 245);
+	--li-2: rgba(255, 250, 255);
+	--li-3: rgba(230, 255, 240);
+	--li-4: rgba(240, 255, 255);
+	--li-5: rgba(255, 230, 240);
+	--li-6: rgba(240, 240, 255);
+
+	--text-family: Jost, "Jost*", Futura, sans-serif;
+	--mono-family: "Iosevka QP", "Iosevka", monospace;
+	--banner-family: var(--sans-family);
+	--page-family: var(--sans-family);
+	--entry-bar-family: var(--sans-family);
+	--entry-family: var(--sans-family);
+	--heading-family: var(--entry-family);
+	--title-family: var(--heading-family);
+	--heading-weight: 600;
+	--title-weight: var(--heading-weight);
+
+	--quote-fill: var(--offset);
+	--quote-line: var(--line);
+	--quote-left-border-line: var(--link-line);
+	--quote-family: var(--sans-family);
+
+	--reading-width: 84ex;
+	--entry-radius: 14px;
+
+	font-size: 1.2em;
 	line-height: 1.2;
+
+	--background-size: 72px;
+
+	--code-comment: #a2b2d4;
+	--code-number: #2d83f9;
+	--code-name: #20c99b;
+	--code-constant: #aa3565;
+	--code-function: #7633cf;
+	--code-keyword: #1b999f;
+	--code-string: #363;
+	--code-string-fill: #acffcc33;
+	--code-regex-fill: #ff000011;
+	--code-regex: black;
+
+	height: 100%;
+	background-color: var(--page-fill);
+	color: var(--page-line);
+
+	--code-fill: var(--offset);
+	--inline-code-fill: var(--code-fill);
+	--code-line: var(--line);
+	--inline-code-line: var(--code-line);
+	--code-border-line: var(--code-line);
+
+	--canvas-fill: var(--shaded-fill);
+	--canvas-line: var(--shaded-line);
+
+	--tag-fill: var(--lemon);
+	--tag-line: black;
+	--header-size: 2.6rem;
 }
-h1 {
-	font-size: 3.052em;
+
+html,
+body {
+	font-family: var(--family-text);
+	margin: 0;
 }
-h2 {
-	font-size: 2.441em;
+
+body.has-cherries-background {
+	background-image: var(--background-image);
+	background-size: var(--background-size);
+	background-repeat: var(--background-repeat);
+	background-attachment: var(--background-attachment);
+	background-position: var(--background-position);
 }
-h3 {
-	font-size: 1.953em;
+
+body {
+	contain: layout;
+	min-height: 100vh;
+	padding-bottom: var(--extra-bottom);
 }
-h4 {
-	font-size: 1.563em;
-}
-h5 {
-	font-size: 1.25em;
-}
-strong,
-b {
-	font-weight: 700;
-}
-a {
-	color: var(--accent);
-}
-a:hover {
-	color: var(--accent);
-}
-p {
-	margin-bottom: 1em;
-}
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
-img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 8px;
-}
+
 code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	font-family: var(--family--mono);
 }
-pre {
-	padding: 1.5em;
-	border-radius: 8px;
+
+[hidden] {
+	display: none;
 }
-pre > code {
-	all: unset;
+
+* {
+	scrollbar-color: var(--shaded-line) var(--shaded-fill);
+	image-rendering: pixelated;
 }
-blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0px;
-	font-size: 1.333em;
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
 }
-hr {
-	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+
+img,
+video {
+	max-width: 100%;
+	image-rendering: pixelated;
 }
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
+
+a {
+	background: var(--line-fill);
+	color: var(--link-line);
+	text-decoration-skip-ink: auto;
 }
 
 .sr-only {
