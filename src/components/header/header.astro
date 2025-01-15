@@ -1,0 +1,41 @@
+---
+import {SITE_TITLE} from "../../consts"
+import Cherries from "./cherries.astro"
+---
+
+<header>
+	<nav>
+		<p>
+			<Cherries cherries="#ff2a50" stem="#40dcba" />
+			<a href="/">{SITE_TITLE}</a>
+		</p>
+	</nav>
+</header>
+<style>
+	:root {
+		font-family: var(--mono-family);
+	}
+	header {
+		margin: 0;
+		padding: 0 1em;
+		background: black;
+		color: #ff2a50;
+		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+		font-weight: 500;
+	}
+	nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	nav a {
+		padding: 1em 0.5em;
+		color: var(--black);
+		border-bottom: 4px solid transparent;
+		text-decoration: none;
+	}
+	nav a.active {
+		text-decoration: none;
+		border-bottom-color: var(--accent);
+	}
+</style>

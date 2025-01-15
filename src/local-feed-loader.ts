@@ -76,6 +76,7 @@ export const ItemSchema = z.object({
 	meta: MetaSchema,
 	dateLocale: z.string().optional(),
 	timezone: z.string().optional(),
+	plain: z.coerce.boolean(),
 })
 
 type Simplify<T> = {
@@ -110,9 +111,15 @@ export function localFeedLoader({url, path}: FeedLoaderOptions): Loader {
 				let item: Item | null
 				while ((item = parser.read() as Item) !== null) {
 					const id = item.guid
+						?.replace("https://chee.party/", "")
+						.replace(/\/$/, "")
 					if (!id) {
 						logger.warn("Item does not have a guid, skipping")
 						continue
+					}
+
+					if (item.description?.match(/^[^<]/)) {
+						item.plain = true
 					}
 
 					item.dateLocale = item["chee:date-locale"]?.["#"]
@@ -130,6 +137,10 @@ export function localFeedLoader({url, path}: FeedLoaderOptions): Loader {
 							html: data.description ?? "",
 						},
 					})
+					// // console.log(id)
+					// if (id == "2022/08/29/4829") {
+					// 	console.log(store.get(id))
+					// }
 				}
 			})
 

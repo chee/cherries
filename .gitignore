@@ -24,3 +24,5 @@ pnpm-debug.log*
 .idea/
 
 /.netlify/
+
+/public/eleventy-cherries-support/media/
