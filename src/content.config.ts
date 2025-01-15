@@ -2,8 +2,8 @@ import {glob, file} from "astro/loaders"
 import {defineCollection, z} from "astro:content"
 import {localFeedLoader} from "./local-feed-loader.ts"
 
-const documents = defineCollection({
-	loader: glob({base: "./src/documents", pattern: "**/*.{md,mdx}"}),
+const entries = defineCollection({
+	loader: glob({base: "./src/entries", pattern: "**/*.{md,mdx}"}),
 	// Type-check frontmatter using a schema
 	schema: z.object({
 		title: z.string().optional(),
@@ -57,7 +57,7 @@ const eleventyCherries = defineCollection({
 })
 
 export const collections = {
-	documents,
+	entries,
 	freeTrainStations,
 	genderNeutralBathrooms,
 	eleventyCherries,

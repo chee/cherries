@@ -3,10 +3,8 @@ import {getCollection} from "astro:content"
 import {SITE_TITLE, SITE_DESCRIPTION} from "../consts"
 
 export async function GET(context) {
-	const entries = (await getCollection("documents")).filter(
-		doc =>
-			(doc.data.tags ? doc.data.tags.includes("entry") : true) &&
-			(import.meta.env.PROD ? !doc.data.draft : true)
+	const entries = (await getCollection("entries")).filter(doc =>
+		import.meta.env.PROD ? !doc.data.draft : true
 	)
 	return rss({
 		title: SITE_TITLE,

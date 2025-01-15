@@ -5,10 +5,10 @@ import EleventyCherriesEntry from "../layouts/eleventy-cherries-entry.astro"
 import {render} from "astro:content"
 
 export async function getStaticPaths() {
-	const documents = await getCollection("documents")
+	const entries = await getCollection("entries")
 	const eleventyEntries = await getCollection("eleventyCherries")
 	return [
-		...documents.map(post => ({
+		...entries.map(post => ({
 			params: {slug: post.id},
 			props: post,
 		})),
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 		})),
 	]
 }
-type Props = CollectionEntry<"documents" | "eleventyCherries">
+type Props = CollectionEntry<"entries" | "eleventyCherries">
 
 const post = Astro.props
 const {Content} = await render(post)
