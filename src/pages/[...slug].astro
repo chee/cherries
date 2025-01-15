@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 			props: post,
 		})),
 		...eleventyEntries.map(post => ({
-			params: {slug: post.id.replace("https://chee.party/", "")},
+			params: {slug: post.id},
 			props: post,
 		})),
 	]
@@ -28,7 +28,7 @@ const {Content} = await render(post)
 	post.collection === "eleventyCherries" ? (
 		<EleventyCherriesEntry
 			{...post.data}
-			id={post.id.replace("https://chee.party/", "")}
+			id={post.id}
 			collection="eleventyCherries">
 			<Content />
 		</EleventyCherriesEntry>

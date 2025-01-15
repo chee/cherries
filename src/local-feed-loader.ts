@@ -63,8 +63,8 @@ export const ItemSchema = z.object({
 	title: z.string().nullable(),
 	description: z.string().nullable(),
 	summary: z.string().nullable(),
-	date: z.coerce.date().nullable(),
-	pubdate: z.coerce.date().nullable(),
+	date: z.coerce.date(),
+	pubdate: z.coerce.date(),
 	link: z.string().nullable(),
 	origlink: z.string().nullable(),
 	author: z.string().nullable(),
@@ -137,10 +137,6 @@ export function localFeedLoader({url, path}: FeedLoaderOptions): Loader {
 							html: data.description ?? "",
 						},
 					})
-					// // console.log(id)
-					// if (id == "2022/08/29/4829") {
-					// 	console.log(store.get(id))
-					// }
 				}
 			})
 

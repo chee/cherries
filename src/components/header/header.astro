@@ -1,6 +1,7 @@
 ---
 import {SITE_TITLE} from "../../consts"
 import Cherries from "./cherries.astro"
+import Navigation from "../navigation/navigation.astro"
 ---
 
 <header>
@@ -9,6 +10,7 @@ import Cherries from "./cherries.astro"
 			<Cherries cherries="#ff2a50" stem="#40dcba" />
 			<a href="/">{SITE_TITLE}</a>
 		</p>
+		<Navigation />
 	</nav>
 </header>
 <style>
