@@ -10,5 +10,7 @@ export default function Status() {
 			"automerge:26oAmUA4iBiRyzVaz7VJPdQnVbU4" as AutomergeUrl
 		)
 	)
-	return <pre innerHTML={store()?.text} style={{"white-space": "wrap"}} />
+	return (
+		<pre innerHTML={store()?.text ?? ":)"} style={{"white-space": "wrap"}} />
+	)
 }
