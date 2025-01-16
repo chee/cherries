@@ -9,6 +9,7 @@ pages:
     - corepack prepare pnpm@latest-10 --activate
     - pnpm config set store-dir .pnpm-store
   script:
+    - pnpm install
     - pnpm build
     - mv public public_
     - mv dist public
