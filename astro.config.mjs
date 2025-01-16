@@ -9,6 +9,26 @@ import yaml from "@rollup/plugin-yaml"
 import wasm from "vite-plugin-wasm"
 import lychee from "./lychee-theme.ts"
 import civet from "@danielx/civet/astro"
+import fs from "fs"
+
+const base64Loader = {
+	name: "base64-loader",
+	/**
+	 *
+	 * @param {any} _
+	 * @param {string} id
+	 * @returns
+	 */
+	transform(_, id) {
+		const [path, query] = id.split("?")
+		if (query != "base64") return null
+
+		const data = fs.readFileSync(path)
+		const base64 = data.toString("base64")
+
+		return `export default '${base64}';`
+	},
+}
 
 // https://astro.build/config
 export default defineConfig({
@@ -23,7 +43,7 @@ export default defineConfig({
 	],
 	adapter: netlify(),
 	vite: {
-		plugins: [yaml(), wasm()],
+		plugins: [yaml(), wasm(), base64Loader],
 	},
 	markdown: {
 		shikiConfig: {

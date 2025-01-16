@@ -54,6 +54,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-toml": "^1.0.0",
+    "vite": "^6.0.7",
     "vite-plugin-wasm": "^3.4.1"
   }
 }

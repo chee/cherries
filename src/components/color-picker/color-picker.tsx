@@ -69,7 +69,7 @@ createEffect(() => {
 	)
 })
 
-export default function ColorPicker(props) {
+export default function ColorPicker() {
 	const light = (<div />) as HTMLDivElement
 	const sat = (<div />) as HTMLDivElement
 	const hue = (<div />) as HTMLDivElement

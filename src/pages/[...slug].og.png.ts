@@ -4,7 +4,7 @@ import {html} from "satori-html"
 import {stripHtml as stripHTML} from "string-strip-html"
 import getEntries from "../entries.ts"
 import fs from "fs"
-import type {CollectionEntry} from "astro:content"
+import background from "../opengraph/background.jpg?base64"
 
 export async function getStaticPaths() {
 	const entries = await getEntries()
@@ -37,7 +37,7 @@ export const GET: APIRoute = async ({params, request, url, props}) => {
 	return await satoriAstroOG({
 		template: html`<div
 			style="display: flex; 
-			background: url(${url.protocol}//${url.host}/opengraph-background.jpg); 
+			background: url('data:image/jpeg;base64,${background}'); 
 			width: 1200px; 
 			height: 630px;
 			background-size: 1200px 630px;"

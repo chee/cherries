@@ -138,6 +138,9 @@ importers:
       rollup-plugin-toml:
         specifier: ^1.0.0
         version: 1.0.0
+      vite:
+        specifier: ^6.0.7
+        version: 6.0.7(@types/node@22.10.6)(jiti@1.21.7)(sass@1.83.4)(stylus@0.64.0)(yaml@2.7.0)
       vite-plugin-wasm:
         specifier: ^3.4.1
         version: 3.4.1(vite@6.0.7(@types/node@22.10.6)(jiti@1.21.7)(sass@1.83.4)(stylus@0.64.0)(yaml@2.7.0))
