@@ -1,0 +1,11 @@
+---
+import ColorPicker from "../components/color-picker/color-picker.tsx"
+export const title = "color hash demo"
+import BaseLayout from "../layouts/base-layout.astro"
+---
+
+<BaseLayout>
+	<ColorPicker client:only="solid-js">
+		<slot name="title">{title}</slot>
+	</ColorPicker>
+</BaseLayout>
