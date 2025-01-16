@@ -1,0 +1,11 @@
+---
+import getEntries, {byRecency} from "../../entries.ts"
+
+export async function getStaticPaths() {
+	const entries = (await getEntries()).toSorted(byRecency)
+	return Array.from(
+		new Set(entries.map(entry => entry.data.date.getFullYear()))
+	).map(year => ({params: {year}}))
+}
+return Astro.rewrite(`/${Astro.params.year}/page/1`)
+---

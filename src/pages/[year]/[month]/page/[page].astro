@@ -1,0 +1,71 @@
+---
+import type {GetStaticPathsOptions} from "astro"
+import getEntries, {byRecency} from "../../../../entries.ts"
+
+export async function getStaticPaths({paginate}: GetStaticPathsOptions) {
+	const entries = (await getEntries()).toSorted(byRecency)
+	const yearByMonth = entries.reduce(
+		(a, b) => {
+			const date = b.data.date
+			const year = date.getFullYear()
+			const month = date.getMonth() + 1
+			a[year] ||= []
+			if (!a[year].includes(month)) {
+				a[year].push(month)
+			}
+			return a
+		},
+		{} as {[year: number]: number[]}
+	)
+	return Object.entries(yearByMonth).flatMap(([a, months]) => {
+		const year = +a
+		return months.flatMap(month => {
+			const filtered = entries.filter(entry => {
+				return (
+					entry.data.date.getMonth() + 1 === month &&
+					entry.data.date.getFullYear() == year
+				)
+			})
+			return paginate(filtered, {
+				params: {
+					year: year.toString(),
+					month: month.toString(),
+				},
+				pageSize: 10,
+			})
+		})
+	})
+}
+
+const {page, year, month} = Astro.props
+const params = Astro.params
+---
+
+<header>
+	<h1>
+		{
+			new Date(2001, +params.month - 1, 1)
+				.toLocaleString("default", {
+					month: "long",
+				})
+				.toLowerCase()
+		}
+		{params.year}
+	</h1>
+	<p>page {params.page}</p>
+</header>
+<ul>
+	{
+		page.data.map(entry => (
+			<li>
+				<h2>
+					<a href={"/" + entry.id}>{entry.data.title || entry.id}</a>
+				</h2>
+			</li>
+		))
+	}
+</ul>
+{page.url.first ? <a href={page.url.first}>First</a> : null}
+{page.url.prev ? <a href={page.url.prev}>Previous</a> : null}
+{page.url.next ? <a href={page.url.next}>Next</a> : null}
+{page.url.last ? <a href={page.url.last}>Last</a> : null}

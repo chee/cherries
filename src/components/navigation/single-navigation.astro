@@ -1,0 +1,76 @@
+---
+import navigation from "./navigation.ts"
+const [prev, next] = await navigation(Astro.params.slug ?? "")
+const prevURL = prev && `/${prev.id}/`
+const nextURL = next && `/${next.id}/`
+---
+
+{
+	(prev || next) && (
+		<nav>
+			{prev ? (
+				<a href={prevURL} rel="prev" aria-label="previous page">
+					<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" />
+					</svg>
+					<span class="page-name">{prev.data.title ?? prev.id}</span>
+				</a>
+			) : (
+				<span style="display: inline-block; width: 1em; height: 1em;" />
+			)}
+
+			{next && (
+				<a href={nextURL} rel="next" aria-label="next page">
+					<span class="page-name">{next.data.title ?? next.id}</span>
+					<svg
+						style="rotate: 180deg"
+						viewBox="0 3 20 20"
+						xmlns="http://www.w3.org/2000/svg">
+						<path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" />
+					</svg>
+				</a>
+			)}
+		</nav>
+	)
+}
+<style>
+	nav {
+		display: flex;
+		place-content: center;
+		place-items: center;
+		cursor: default;
+		font-family: var(--mono-family);
+		gap: 2em;
+		place-content: space-between;
+	}
+
+	a {
+		display: flex;
+		place-content: center;
+		place-items: center;
+		transition:
+			scale 0.2s,
+			color 0.2s;
+		color: var(--navigation-line, black);
+		&:hover {
+			scale: 1.1;
+			color: var(--navigation-hover-line, #3874ff);
+			svg path {
+				fill: var(--navigation-hover-line, #3874ff);
+			}
+		}
+	}
+
+	.page-name {
+		margin-top: 5px;
+	}
+
+	svg {
+		height: 2em;
+		width: 2em;
+		path {
+			fill: var(--navigation-line, black);
+			transition: fill 0.2s;
+		}
+	}
+</style>

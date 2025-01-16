@@ -5,7 +5,7 @@ import {
 	next,
 } from "@automerge/automerge"
 import {beforeEach, describe, expect, test} from "vitest"
-import {documentData} from "./data"
+import {documentData} from "./data.ts"
 import {clone, getProperty} from "./helpers.ts"
 import {apply, fromAutomerge} from "../cabbages.ts"
 

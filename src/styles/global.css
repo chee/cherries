@@ -108,6 +108,7 @@
 
 	--text-family: Jost, "Jost*", Futura, sans-serif;
 	--mono-family: "Iosevka QP", "Iosevka", monospace;
+	--tag-family: var(--mono-family);
 	--banner-family: var(--sans-family);
 	--page-family: var(--sans-family);
 	--entry-bar-family: var(--sans-family);
@@ -144,6 +145,7 @@
 	height: 100%;
 	background-color: var(--page-fill);
 	color: var(--page-line);
+	overscroll-behavior-y: none;
 
 	--code-fill: var(--offset);
 	--inline-code-fill: var(--code-fill);
@@ -161,7 +163,7 @@
 
 html,
 body {
-	font-family: var(--family-text);
+	font-family: var(--text-family);
 	margin: 0;
 }
 
@@ -169,22 +171,21 @@ body {
 	background: cyan;
 }
 
-body.has-cherries-background {
-	background-image: var(--background-image);
-	background-size: var(--background-size);
-	background-repeat: var(--background-repeat);
-	background-attachment: var(--background-attachment);
-	background-position: var(--background-position);
-}
-
 body {
 	contain: layout;
 	min-height: 100vh;
 	padding-bottom: var(--extra-bottom);
+	display: flex;
+	flex-direction: column;
+	gap: 2em;
+}
+
+main {
+	flex: 1;
 }
 
 code {
-	font-family: var(--family--mono);
+	font-family: var(--mono-family);
 }
 
 [hidden] {

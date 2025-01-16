@@ -1,0 +1,167 @@
+---
+import type {CollectionEntry} from "astro:content"
+type Props = CollectionEntry<"entries">["data"] & {
+	id: string
+}
+
+import Bar from "./bar.astro"
+
+const {
+	title,
+	description,
+	date,
+	id,
+	heroImage,
+	tags,
+
+	draft,
+
+	updated,
+} = Astro.props
+const DEFAULT_TIMEZONE = "Europe/London"
+const DEFAULT_DATE_LOCALE = "en-CA"
+
+const timezone =
+	"timezone" in Astro.props
+		? Astro.props.timezone || DEFAULT_TIMEZONE
+		: DEFAULT_TIMEZONE
+
+const dateLocale =
+	"dateLocale" in Astro.props
+		? Astro.props.dateLocale || DEFAULT_DATE_LOCALE
+		: DEFAULT_DATE_LOCALE
+import {toTimeZoneName, toString} from "../../time.ts"
+import Tag from "./tag.astro"
+const slug = id.replaceAll("/", "-")
+---
+
+<article class=`slug-${slug} h-entry`>
+	<header>
+		<h1><a href={"/" + id}>{title}</a></h1>
+	</header>
+	<div class="e-content">
+		<slot />
+	</div>
+	<footer>
+		{
+			tags?.length ? (
+				<div class="tags">
+					<h6 style="margin: 0">tags</h6>
+					{tags.map(tag => (
+						<Tag tag={tag} />
+					))}
+				</div>
+			) : null
+		}
+		<div class="eot">
+			<time class="dt-published" datetime={date.toISOString()}>
+				{
+					date
+						.toLocaleString(dateLocale, {
+							timeZone: timezone,
+							hour: "numeric",
+							minute: "2-digit",
+							hour12: true,
+							day: "numeric",
+							weekday: "long",
+							year: "numeric",
+							month: "short",
+						})
+						.replace(/, /g, " ")
+						.toUpperCase()
+				}
+				{toTimeZoneName(date, "en-ca", timezone, "short")}
+			</time>
+			<span style="font-weight: bold">END OF TRANSMISSION</span>
+		</div>
+	</footer>
+</article>
+
+<style>
+	footer {
+		background: #ffe;
+		font-family: var(--mono-family);
+		font-size: 14px;
+		padding: 0.5rem;
+		border-top: 1px solid black;
+		display: flex;
+		justify-content: space-between;
+	}
+	.eot {
+		display: flex;
+		justify-content: space-between;
+		text-align: right;
+		flex-direction: column;
+	}
+	article {
+		max-width: 84ex;
+		margin: auto;
+		font-size: 1em;
+		border: 1px solid black;
+		padding-top: 0px;
+		box-shadow: 3px 3px 0px 0px #fac;
+		background: white;
+	}
+
+	header {
+		background: #ffaacc33;
+		&:before {
+			content: "";
+			display: block;
+			height: 20px;
+			width: 100%;
+			position: absolute;
+			--odd-stripe: rgb(255, 73, 183);
+			--even-stripe: white;
+			background: linear-gradient(
+				0deg,
+				var(--odd-stripe),
+				var(--odd-stripe) 2px,
+				var(--even-stripe) 2px,
+				var(--even-stripe) 4px
+			);
+			background-position-y: 2px;
+			background-size: 100% 3px;
+			opacity: 0.2;
+			top: 2px;
+			border-top: 1px solid white;
+			border-bottom: 2px solid white;
+		}
+
+		text-align: center;
+
+		border-bottom: 1px solid black;
+		font-size: 0.9rem;
+		position: relative;
+	}
+
+	h1 {
+		font-size: 1em;
+		font-family: var(--mono-family);
+		text-align: center;
+		padding: 1px 1ex;
+		margin: 0 auto;
+		font-weight: 900;
+		background: white;
+		z-index: 0;
+		position: relative;
+
+		display: inline-block;
+
+		a {
+			text-decoration: none;
+			color: black;
+		}
+	}
+
+	.e-content {
+		padding: 0 0.5rem;
+		border-top: 1px solid #a46;
+	}
+
+	.tags {
+		--tag-fill: transparent;
+		--tag-transform: none;
+		--tag-padding: 0;
+	}
+</style>

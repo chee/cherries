@@ -1,0 +1,13 @@
+---
+import getEntries, {byRecency} from "../../../entries.ts"
+
+export async function getStaticPaths() {
+	const entries = (await getEntries()).toSorted(byRecency)
+	return Array.from(
+		new Set(entries.flatMap(entry => entry.data.tags || []))
+	).map(tag => {
+		return {params: {tag}}
+	})
+}
+return Astro.rewrite(`/tag/${Astro.params.tag}/page/1`)
+---

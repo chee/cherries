@@ -9,6 +9,9 @@ import yaml from "@rollup/plugin-yaml"
 import wasm from "vite-plugin-wasm"
 import lychee from "./lychee-theme.json"
 
+import fs from "fs"
+import opengraphImages, {presets} from "astro-opengraph-images"
+
 // https://astro.build/config
 export default defineConfig({
 	site: "https://chee.party",
@@ -21,5 +24,9 @@ export default defineConfig({
 		shikiConfig: {
 			theme: lychee,
 		},
+	},
+	experimental: {
+		contentIntellisense: true,
+		svg: true,
 	},
 })

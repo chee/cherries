@@ -77,6 +77,7 @@ export const ItemSchema = z.object({
 	dateLocale: z.string().optional(),
 	timezone: z.string().optional(),
 	plain: z.coerce.boolean(),
+	tags: z.array(z.string()),
 })
 
 type Simplify<T> = {
@@ -124,6 +125,15 @@ export function localFeedLoader({url, path}: FeedLoaderOptions): Loader {
 
 					item.dateLocale = item["chee:date-locale"]?.["#"]
 					item.timezone = item["chee:timezone"]?.["#"]
+
+					let tags = item["chee:tag"] as {"#": string}[]
+					if (tags && !Array.isArray(tags)) {
+						tags = [tags]
+					}
+					item.tags =
+						tags
+							?.map(tag => tag["#"])
+							.filter(tag => !["entries", "feed"].includes(tag)) || []
 
 					const data = await parseData({
 						id,

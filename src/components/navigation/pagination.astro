@@ -1,0 +1,70 @@
+---
+import type {Page} from "astro"
+
+type Props = {page: Page}
+const {page} = Astro.props
+---
+
+<nav>
+	{
+		page.url.prev ? (
+			<a href={page.url.prev} rel="prev" aria-label="previous page">
+				<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+					<path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" />
+				</svg>
+			</a>
+		) : (
+			<span style="display: inline-block; width: 1em; height: 1em;" />
+		)
+	}
+
+	<span class="nav-current">
+		<span class="nav-current__current">
+			{page.currentPage}
+		</span>
+		<span class="nav-current__sep"> / </span>
+		<span class="nav-current__of">
+			{page.total}
+		</span>
+	</span>
+
+	{
+		page.url.next && (
+			<a href={page.url.next} rel="next" aria-label="next page">
+				<svg
+					style="rotate: 180deg"
+					viewBox="0 3 20 20"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" />
+				</svg>
+			</a>
+		)
+	}
+</nav>
+<style>
+	.h-feed > :global(article) {
+		margin-bottom: 2em;
+	}
+	nav {
+		display: flex;
+		place-content: center;
+		place-items: center;
+		cursor: default;
+		font-family: var(--mono-family);
+		color: var(--navigation-line, black);
+	}
+	svg {
+		height: 2em;
+		width: 2em;
+		transition: scale 0.2s;
+		path {
+			fill: var(--navigation-line, black);
+		}
+		&:hover {
+			scale: 1.2;
+			path {
+				fill: var(--navigation-hover-line, #2acfa0);
+			}
+		}
+	}
+</style>

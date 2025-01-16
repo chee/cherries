@@ -1,0 +1,14 @@
+---
+import getEntries, {byRecency} from "../../entries.ts"
+import type {GetStaticPathsOptions} from "astro"
+
+export const getStaticPaths = async function getStaticPaths({
+	paginate,
+}: GetStaticPathsOptions) {
+	const entries = (await getEntries()).toSorted(byRecency)
+	return paginate(entries, {
+		pageSize: 5,
+	})
+}
+return Astro.rewrite(`/cherries/page/1`)
+---

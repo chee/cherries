@@ -56,6 +56,10 @@ const eleventyCherries = defineCollection({
 	}),
 })
 
+declare global {
+	type EntryCollectionName = "entries" | "eleventyCherries"
+}
+
 export const collections = {
 	entries,
 	freeTrainStations,

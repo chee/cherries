@@ -1,24 +1,21 @@
 ---
 import {type CollectionEntry, getCollection} from "astro:content"
-import Entry from "../layouts/entry-layout.astro"
-import EleventyCherriesEntry from "../layouts/eleventy-cherries-entry.astro"
+import CherriesLayout from "../layouts/cherries-layout.astro"
+import EleventyCherriesLayout from "../layouts/eleventy-cherries-layout.astro"
+import EleventyCherriesEntry from "../components/entry/eleventy-cherries-entry.astro"
 import {render} from "astro:content"
+import getEntries from "../entries.ts"
+import Entry from "../components/entry/entry.astro"
 
 export async function getStaticPaths() {
-	const entries = await getCollection("entries")
-	const eleventyEntries = await getCollection("eleventyCherries")
-	return [
-		...entries.map(post => ({
-			params: {slug: post.id},
-			props: post,
-		})),
-		...eleventyEntries.map(post => ({
-			params: {slug: post.id},
-			props: post,
-		})),
-	]
+	const entries = await getEntries()
+	return entries.map(post => ({
+		params: {slug: post.id},
+		props: post,
+	}))
 }
-type Props = CollectionEntry<"entries" | "eleventyCherries">
+
+type Props = CollectionEntry<EntryCollectionName>
 
 const post = Astro.props
 const {Content} = await render(post)
@@ -26,15 +23,20 @@ const {Content} = await render(post)
 
 {
 	post.collection === "eleventyCherries" ? (
-		<EleventyCherriesEntry
-			{...post.data}
-			id={post.id}
-			collection="eleventyCherries">
-			<Content />
-		</EleventyCherriesEntry>
+		<EleventyCherriesLayout {...post.data}>
+			<main>
+				<EleventyCherriesEntry {...post.data} id={post.id}>
+					<Content />
+				</EleventyCherriesEntry>
+			</main>
+		</EleventyCherriesLayout>
 	) : (
-		<Entry {...post.data} id={post.id} collection={post.collection}>
-			<Content />
-		</Entry>
+		<CherriesLayout {...post.data}>
+			<main>
+				<Entry {...post.data} id={post.id}>
+					<Content />
+				</Entry>
+			</main>
+		</CherriesLayout>
 	)
 }

@@ -5,6 +5,7 @@ import Footer from "../components/footer/footer.astro"
 import {SITE_TITLE, SITE_DESCRIPTION} from "../consts"
 import Cherries from "../components/header/cherries.astro"
 import Clouds from "../components/header/clouds.astro"
+import Status from "../components/status.tsx"
 ---
 
 <!doctype html>
@@ -15,6 +16,15 @@ import Clouds from "../components/header/clouds.astro"
 	<body>
 		<Header />
 		<main>
+			<figure class="status">
+				<figcaption>current status</figcaption>
+				<article>
+					<Status client:only="solid-js">
+						<span slot="fallback">:)</span>
+					</Status>
+				</article>
+			</figure>
+
 			<p>hi! i'm ✨ <b>chee rabbits</b> ✨</p>
 
 			<p>welcome to my website.</p>
@@ -57,5 +67,34 @@ import Clouds from "../components/header/clouds.astro"
 		font-family: var(--text-family);
 		padding: 1em;
 		font-size: 1.4em;
+	}
+
+	.status {
+		--radius: 4px;
+		font-family: monospace;
+		font-size: 0.5em;
+		float: right;
+		padding: 0;
+		margin: 0;
+		display: inline-flex;
+		flex-direction: column;
+		border: 2px solid hsl(163, 100%, 40%);
+		max-width: 6rem;
+		text-wrap: balance;
+		text-align: center;
+		border-radius: var(--radius);
+		overflow: hidden;
+
+		figcaption {
+			border: 2px solid hsl(163, 100%, 35%);
+			padding: 0.25em;
+		}
+
+		article {
+			background: hsl(163, 100%, 50%);
+			border: 2px solid hsl(163, 100%, 35%);
+			border-top: 0;
+			padding: 0.5em 0.25em;
+		}
 	}
 </style>

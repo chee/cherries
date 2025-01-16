@@ -1,1 +1,16 @@
-<footer></footer>
+---
+import Navigation from "../navigation/single-navigation.astro"
+---
+
+<footer>
+	<Navigation />
+	<slot />
+</footer>
+
+<style>
+	footer {
+		background: black;
+		--navigation-line: white;
+		--navigation-hover-line: #ff4a90;
+	}
+</style>

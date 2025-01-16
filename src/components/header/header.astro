@@ -1,18 +1,26 @@
 ---
 import {SITE_TITLE} from "../../consts"
 import Cherries from "./cherries.astro"
-import Navigation from "../navigation/navigation.astro"
+import Clouds from "./clouds.astro"
 ---
 
 <header>
 	<nav>
-		<p>
-			<Cherries cherries="#ff2a50" stem="#40dcba" />
-			<a href="/">{SITE_TITLE}</a>
+		<p><a href="/">🐰 chee</a></p>
+		<p style="color: #ff2a50">
+			<a href="/cherries/">
+				<Cherries cherries="#ff2a50" stem="#40dcba" />
+				{SITE_TITLE}
+			</a>
 		</p>
-		<Navigation />
+		<p style="color: white">
+			<a href="https://quietparty.net">
+				<Clouds style="margin-right: .5ch" />quiet party
+			</a>
+		</p>
 	</nav>
 </header>
+
 <style>
 	:root {
 		font-family: var(--mono-family);
@@ -21,9 +29,9 @@ import Navigation from "../navigation/navigation.astro"
 		margin: 0;
 		padding: 0 1em;
 		background: black;
-		color: #ff2a50;
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
 		font-weight: 500;
+		color: white;
 	}
 	nav {
 		display: flex;

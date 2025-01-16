@@ -1,0 +1,43 @@
+---
+import getEntries, {byRecency} from "../../../../entries.ts"
+import type {GetStaticPathsOptions} from "astro"
+
+export const getStaticPaths = async function getStaticPaths({
+	paginate,
+}: GetStaticPathsOptions) {
+	const entries = (await getEntries()).toSorted(byRecency)
+	const tags = Array.from(
+		new Set(entries.flatMap(entry => entry.data.tags || []))
+	)
+	return tags.flatMap(tag => {
+		const filteredPosts = entries.filter(post => post.data.tags?.includes(tag))
+		return paginate(filteredPosts, {
+			params: {tag},
+			pageSize: 10,
+		})
+	})
+}
+
+const {page, tag} = Astro.props
+const params = Astro.params
+---
+
+<header>
+	<h1>{params.tag}</h1>
+	<p>page {params.page}</p>
+</header>
+<ul>
+	{
+		page.data.map(entry => (
+			<li>
+				<h2>
+					<a href={"/" + entry.id}>{entry.data.title || entry.id}</a>
+				</h2>
+			</li>
+		))
+	}
+</ul>
+{page.url.first ? <a href={page.url.first}>First</a> : null}
+{page.url.prev ? <a href={page.url.prev}>Previous</a> : null}
+{page.url.next ? <a href={page.url.next}>Next</a> : null}
+{page.url.last ? <a href={page.url.last}>Last</a> : null}

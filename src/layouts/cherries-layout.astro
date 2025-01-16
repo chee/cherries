@@ -6,21 +6,25 @@ import Footer from "../components/footer/footer.astro"
 type Props = {
 	title?: string | null
 	description?: string | null
-	class?: string
 }
 
 const {title, description} = Astro.props
 ---
 
-<html lang="en-CA" class={Astro.props.class}>
+<html lang="en-CA" class="cherries">
 	<head>
 		<slot name="head" />
 		<BaseHead title={title ?? ""} description={description ?? ""} />
+		<style>
+			.cherries {
+				background: #f7f1fe;
+			}
+		</style>
 	</head>
 
 	<body>
-		<Header />
+		<Header><slot name="header" /></Header>
 		<slot />
-		<Footer />
+		<Footer><slot name="footer" /></Footer>
 	</body>
 </html>

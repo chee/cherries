@@ -3,9 +3,11 @@
 	"include": [".astro/types.d.ts", "**/*"],
 	"exclude": ["dist"],
 	"compilerOptions": {
-		"moduleResolution": "bundler",
+		"module": "NodeNext",
+		"moduleResolution": "nodenext",
 		"strictNullChecks": true,
 		"jsx": "preserve",
-		"jsxImportSource": "solid-js"
+		"jsxImportSource": "solid-js",
+		"allowImportingTsExtensions": true
 	}
 }
