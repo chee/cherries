@@ -39,7 +39,7 @@ export default defineConfig({
 		civet({
 			ts: "preserve",
 		}),
-		solid({devtools: true}),
+		solid(),
 	],
 	adapter: netlify(),
 	vite: {

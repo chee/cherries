@@ -1,0 +1,58 @@
+---
+import type {Page} from "astro"
+import {render} from "astro:content"
+import EleventyCherriesEntry from "../components/entry/eleventy-cherries-entry.astro"
+import Entry from "../components/entry/entry.astro"
+import CherriesLayout from "./cherries-layout.astro"
+import Pagination from "../components/navigation/pagination.astro"
+import EleventyCherriesHead from "../components/head/eleventy-cherries-head.astro"
+import EleventyCherriesImportMap from "../components/head/eleventy-cherries-importmap.astro"
+import type {CollectionEntry} from "astro:content"
+export type Props = {
+	page: Page<CollectionEntry<EntryCollectionName>>
+	title: string
+	description: string
+}
+const {page, title, description} = Astro.props
+const hasEleventyCherries = page.data.some(
+	entry => entry.collection == "eleventyCherries"
+)
+---
+
+<CherriesLayout title={title} description={description}>
+	{hasEleventyCherries && <EleventyCherriesImportMap slot="importmap" />}
+	{hasEleventyCherries && <EleventyCherriesHead slot="head" />}
+	<slot name="header" slot="header" />
+	<slot name="after-header" />
+	<main class="h-feed">
+		{
+			page.data.map(async entry => {
+				const {Content} = await render(entry)
+				if (entry.collection == "eleventyCherries") {
+					return (
+						<EleventyCherriesEntry {...entry.data} id={entry.id}>
+							<Content />
+						</EleventyCherriesEntry>
+					)
+				} else {
+					return (
+						<Entry {...entry.data} id={entry.id}>
+							<Content />
+						</Entry>
+					)
+				}
+			})
+		}
+	</main>
+	<slot name="footer" slot="footer" />
+	<Pagination page={page} slot="footer" />
+</CherriesLayout>
+
+<style>
+	.h-feed {
+		--entry-shadow: #6093;
+	}
+	.h-feed > :global(article) {
+		margin-bottom: 2em;
+	}
+</style>

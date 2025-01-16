@@ -11,7 +11,10 @@ import Status from "../components/status.tsx"
 <!doctype html>
 <html lang="en-CA">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION}>
+			<slot name="importmap" slot="importmap" />
+			<slot name="head" />
+		</BaseHead>
 	</head>
 	<body>
 		<Header />

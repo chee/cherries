@@ -1,11 +1,7 @@
 ---
 import getEntries, {byRecency} from "../../../entries.ts"
 import type {GetStaticPathsOptions} from "astro"
-import {render} from "astro:content"
-import EleventyCherriesEntry from "../../../components/entry/eleventy-cherries-entry.astro"
-import Entry from "../../../components/entry/entry.astro"
-import CherriesLayout from "../../../layouts/cherries-layout.astro"
-import Pagination from "../../../components/navigation/pagination.astro"
+import EntryListLayout from "../../../layouts/entry-list-layout.astro"
 
 export const getStaticPaths = async function getStaticPaths({
 	paginate,
@@ -15,39 +11,11 @@ export const getStaticPaths = async function getStaticPaths({
 		pageSize: 4,
 	})
 }
-
 const {page} = Astro.props
 ---
 
-<CherriesLayout title="cherries" description="the entries of chee">
-	<main class="h-feed">
-		{
-			page.data.map(async entry => {
-				const {Content} = await render(entry)
-				if (entry.collection == "eleventyCherries") {
-					return (
-						<EleventyCherriesEntry {...entry.data} id={entry.id}>
-							<Content />
-						</EleventyCherriesEntry>
-					)
-				} else {
-					return (
-						<Entry {...entry.data} id={entry.id}>
-							<Content />
-						</Entry>
-					)
-				}
-			})
-		}
-	</main>
-	<Pagination page={page} slot="footer" />
-</CherriesLayout>
-
-<style>
-	.h-feed {
-		margin-top: 2em;
-	}
-	.h-feed > :global(article) {
-		margin-bottom: 2em;
-	}
-</style>
+<EntryListLayout
+	title="🍒 cherries"
+	description={`all my entries ${page.currentPage > 1 ? `(page ${page.currentPage})}` : ""}`}
+	page={page}
+/>

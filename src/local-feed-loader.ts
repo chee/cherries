@@ -61,7 +61,6 @@ export const EnclosureSchema = z.object({
 // Item schema
 export const ItemSchema = z.object({
 	title: z.string().nullable(),
-	description: z.string().nullable(),
 	summary: z.string().nullable(),
 	date: z.coerce.date(),
 	pubdate: z.coerce.date(),
@@ -104,7 +103,7 @@ export function localFeedLoader({url, path}: FeedLoaderOptions): Loader {
 	return {
 		name: "feed-loader",
 		load: async ({store, logger, parseData, meta}) => {
-			logger.info("Loading posts")
+			logger.info("Loading entries")
 			const parser = new FeedParser({feedurl: url?.toString()})
 			const stream = createReadStream(path)
 			store.clear()
@@ -125,6 +124,8 @@ export function localFeedLoader({url, path}: FeedLoaderOptions): Loader {
 
 					item.dateLocale = item["chee:date-locale"]?.["#"]
 					item.timezone = item["chee:timezone"]?.["#"]
+					const description = item.description as string
+					delete item.description
 
 					let tags = item["chee:tag"] as {"#": string}[]
 					if (tags && !Array.isArray(tags)) {
@@ -144,7 +145,7 @@ export function localFeedLoader({url, path}: FeedLoaderOptions): Loader {
 						id,
 						data,
 						rendered: {
-							html: data.description ?? "",
+							html: description ?? "",
 						},
 					})
 				}

@@ -1,6 +1,7 @@
 ---
 import getEntries, {byRecency} from "../../../../entries.ts"
 import type {GetStaticPathsOptions} from "astro"
+import EntryListLayout from "../../../../layouts/entry-list-layout.astro"
 
 export const getStaticPaths = async function getStaticPaths({
 	paginate,
@@ -18,26 +19,69 @@ export const getStaticPaths = async function getStaticPaths({
 	})
 }
 
-const {page, tag} = Astro.props
+const {page} = Astro.props
 const params = Astro.params
+const {tag} = params
 ---
 
-<header>
-	<h1>{params.tag}</h1>
-	<p>page {params.page}</p>
-</header>
-<ul>
-	{
-		page.data.map(entry => (
-			<li>
-				<h2>
-					<a href={"/" + entry.id}>{entry.data.title || entry.id}</a>
-				</h2>
-			</li>
-		))
+<EntryListLayout
+	title=`entries tagged ${tag} | 🍒`
+	description=`entries tagged ${tag} (page ${page.currentPage})}`
+	page={page}
+>
+	<Fragment slot="after-header">
+		<header>
+			<h1>
+				entries tagged
+				<span class="tag">{tag}</span>
+			</h1>
+		</header>
+	</Fragment>
+</EntryListLayout>
+
+<style>
+	h1,
+	p {
+		margin: 0;
 	}
-</ul>
-{page.url.first ? <a href={page.url.first}>First</a> : null}
-{page.url.prev ? <a href={page.url.prev}>Previous</a> : null}
-{page.url.next ? <a href={page.url.next}>Next</a> : null}
-{page.url.last ? <a href={page.url.last}>Last</a> : null}
+
+	h1 {
+		font-weight: 350;
+		width: 100%;
+	}
+
+	header {
+		max-width: var(--reading-width);
+		margin: auto;
+		display: flex;
+		place-items: top;
+		background: white;
+		width: 100%;
+		padding: 1rem;
+		text-align: center;
+		border-radius: 8px;
+		border: 8px double rgba(200, 0, 255, 0.2);
+	}
+
+	.tag {
+		font-weight: 444;
+		background: yellow;
+		display: inline-flex;
+
+		&::before {
+			content: "“";
+			font-family: var(--mono-family);
+			background: white;
+		}
+
+		&::after {
+			content: "”";
+			font-family: var(--mono-family);
+			background: white;
+		}
+	}
+
+	.page {
+		color: #96a;
+	}
+</style>

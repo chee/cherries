@@ -97,8 +97,6 @@
 	--entry-bar-fill: var(--contrast-fill);
 	--entry-bar-line: var(--contrast-line);
 
-	--entry-shadow: color-mix(in srgb, var(--page-line) 20%, var(--page-fill));
-
 	--li-1: rgba(255, 255, 245);
 	--li-2: rgba(255, 250, 255);
 	--li-3: rgba(230, 255, 240);

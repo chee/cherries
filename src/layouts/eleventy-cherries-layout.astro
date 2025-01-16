@@ -1,21 +1,18 @@
 ---
 import type {CollectionEntry} from "astro:content"
-import EleventyCherriesBaseHead from "../components/head/eleventy-cherries-base-head.astro"
 import BaseLayout from "./base-layout.astro"
+import EleventyCherriesHead from "../components/head/eleventy-cherries-head.astro"
+import EleventyCherriesImportMap from "../components/head/eleventy-cherries-importmap.astro"
 
 type Props = CollectionEntry<"eleventyCherries">["data"]
 
-const {title, description} = Astro.props
+const {title} = Astro.props
 ---
 
-<BaseLayout
-	title={title}
-	description={description}
-	class="eleventy-cherries-root"
->
+<BaseLayout title={title} class="eleventy-cherries-root">
+	<EleventyCherriesImportMap slot="importmap" />
+	<EleventyCherriesHead slot="head" />
 	<Fragment slot="head">
-		<EleventyCherriesBaseHead title={title} description={description} />
-		<slot name="head" />
 		<style is:global>
 			.eleventy-cherries-root {
 				font-family: Jost, "Jost*", sans-serif;
@@ -133,6 +130,7 @@ const {title, description} = Astro.props
 				::-webkit-scrollbar-corner {
 					background: linear-gradient(to right, #ccc, #fff 20%, #ddd);
 				}
+
 				body {
 					background-image: var(--background-image);
 					background-size: var(--background-size);
@@ -142,6 +140,7 @@ const {title, description} = Astro.props
 					contain: layout;
 					padding-bottom: var(--extra-bottom);
 				}
+
 				* {
 					scrollbar-color: var(--shaded-line) var(--shaded-fill);
 					image-rendering: pixelated;
@@ -149,25 +148,16 @@ const {title, description} = Astro.props
 				::selection {
 					background: #13ffbcba;
 				}
-			}
 
-			.eleventy-cherries-root :global(article:is(.h-entry, .h-feed)) {
-				margin-top: 1.375rem;
-				margin-bottom: 1.375em;
-			}
-
-			.eleventy-cherries-root
-				:global(article:is(.h-entry, .h-feed):first-of-type) {
-				margin-top: 0;
-			}
-
-			.eleventy-cherries-root
-				:global(article:is(.h-entry, .h-feed):last-of-type) {
-				margin-bottom: 0;
+				--entry-shadow: color-mix(
+					in srgb,
+					var(--cherries-line) 20%,
+					var(--cherries-fill)
+				);
 			}
 		</style>
 	</Fragment>
 	<main class="main">
-		<slot slot="default" />
+		<slot />
 	</main>
 </BaseLayout>

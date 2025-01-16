@@ -24,11 +24,9 @@ const {Content} = await render(post)
 {
 	post.collection === "eleventyCherries" ? (
 		<EleventyCherriesLayout {...post.data}>
-			<main>
-				<EleventyCherriesEntry {...post.data} id={post.id}>
-					<Content />
-				</EleventyCherriesEntry>
-			</main>
+			<EleventyCherriesEntry {...post.data} id={post.id}>
+				<Content />
+			</EleventyCherriesEntry>
 		</EleventyCherriesLayout>
 	) : (
 		<CherriesLayout {...post.data}>

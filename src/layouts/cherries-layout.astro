@@ -13,8 +13,10 @@ const {title, description} = Astro.props
 
 <html lang="en-CA" class="cherries">
 	<head>
-		<slot name="head" />
-		<BaseHead title={title ?? ""} description={description ?? ""} />
+		<BaseHead title={title ?? ""} description={description ?? ""}>
+			<slot name="importmap" slot="importmap" />
+			<slot name="head" />
+		</BaseHead>
 		<style>
 			.cherries {
 				background: #f7f1fe;

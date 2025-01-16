@@ -1,0 +1,54 @@
+<script type="module" is:inline is:raw>
+	window.withAutomergeRepo = fn => {
+		if (window.repo) {
+			fn(window.repo, window.AutomergeRepo)
+		} else {
+			document.addEventListener("repo", event =>
+				fn(event.detail.repo, event.detail.Repo)
+			)
+		}
+	}
+
+	import * as AutomergeRepo from "@automerge/automerge-repo/slim"
+	import {BrowserWebSocketClientAdapter} from "@automerge/automerge-repo-websocket"
+	import {IndexedDBStorageAdapter} from "@automerge/automerge-repo-indexeddb"
+	await AutomergeRepo.initializeWasm(
+		fetch("/eleventy-cherries-support/automerge.wasm")
+	)
+	let repo = new AutomergeRepo.Repo({
+		storage: new IndexedDBStorageAdapter(),
+		network: [new BrowserWebSocketClientAdapter("wss://galaxy.observer")],
+	})
+	window.AutomergeRepo = AutomergeRepo
+	window.repo = repo
+	await repo.networkSubsystem.whenReady()
+	document.dispatchEvent(
+		new CustomEvent("repo", {detail: {repo, AutomergeRepo}})
+	)
+</script>
+
+<script type="module" is:inline is:raw>
+	function features() {
+		let featureflags = new URLSearchParams(location.search.slice(1))
+		let doc = document.documentElement
+		for (let [flag, value] of featureflags.entries()) {
+			localStorage.setItem(flag, value)
+		}
+		for (let [flag, value] of Object.entries(localStorage)) {
+			try {
+				doc.setAttribute(flag, value)
+			} catch {}
+		}
+		let theme = getComputedStyle(doc).getPropertyValue("--meta-theme-color")
+		const q = doc.querySelector('[name="theme-color"]')
+		q && (q.content = theme)
+	}
+	features()
+	window._features = features
+	window.addEventListener("popstate", () => {
+		setTimeout(() => features())
+	})
+</script>
+
+<script type="module" src="/eleventy-cherries-support/is-land.js" is:inline
+></script>

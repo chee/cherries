@@ -2,20 +2,27 @@
 import {SITE_TITLE} from "../../consts"
 import Cherries from "./cherries.astro"
 import Clouds from "./clouds.astro"
+const cherryColour = "#ff2284"
 ---
 
 <header>
 	<nav>
-		<p><a href="/">🐰 chee</a></p>
-		<p style="color: #ff2a50">
-			<a href="/cherries/">
-				<Cherries cherries="#ff2a50" stem="#40dcba" />
-				{SITE_TITLE}
+		<p>
+			<a href="/">
+				<span>🐰</span>
+				<span>chee</span>
+			</a>
+		</p>
+		<p style=`color: ${cherryColour}`>
+			<a href="/cherries/" class="cherry-link">
+				<Cherries cherries={cherryColour} stem="#40dcba" />
+				<span>{SITE_TITLE}</span>
 			</a>
 		</p>
 		<p style="color: white">
 			<a href="https://quietparty.net">
-				<Clouds style="margin-right: .5ch" />quiet party
+				<Clouds />
+				<span>quiet party</span>
 			</a>
 		</p>
 	</nav>
@@ -39,10 +46,13 @@ import Clouds from "./clouds.astro"
 		justify-content: space-between;
 	}
 	nav a {
-		padding: 1em 0.5em;
 		color: var(--black);
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
+		display: flex;
+		place-content: center;
+		place-items: center;
+		gap: 0.5ch;
 	}
 	nav a.active {
 		text-decoration: none;
