@@ -4,10 +4,20 @@ image: node:22
 before_script:
   - pnpm install
 pages:
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@latest-10 --activate
+    - pnpm config set store-dir .pnpm-store
   script:
     - pnpm build
     - mv public public_
     - mv dist public
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store
   artifacts:
     paths:
       # The folder that contains the files to be exposed at the Page URL
