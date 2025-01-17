@@ -7,9 +7,11 @@
 		font-size: 40px;
 		height: 1em;
 		width: 1em;
-		transform: scale(0.1);
+
+		scale: 0.1;
 		transition:
-			transform 0.2s linear,
+			scale 0.2s linear,
+			transate 0.2s linear,
 			opacity 0.5s ease;
 	}
 </style>
@@ -23,13 +25,13 @@
 		let getRandom = (items: string[]) =>
 			items[Math.floor(Math.random() * items.length)]
 		let pause = false
-
+		//💖 💞 🧡 💛 💚 💙 🩵 💜 🩷 💖 💕 💛
 		let trailers = `
-            💖 💞 🧡 💛 💚 💙 🩵 💜 🩷 💖 💕 💛 🍉 🍊 🍌 🍍 🍐 🍑 🍒 🍓 🥝 🍅 🥑 🥑
-			🌈 🐰 🦊 🐭 🐹 🐰 🐦 🐧 🦆 🦆 🌸 🌸 🌸 🌸 🌸 💮 🏵 🌺 🌻 🌼 🍄
-			🌟 🍇 🍈 🍉 🍊 🍋 🍋‍🟩 🍌 🍍 🥭 🍎 🍏 🍐 🍑 🍒 🍒 🍒 🍒 🍓 🫐 🥝
-			🌺 🍄 🍄 🍅 🍆 🥕 🌽 🍑 🍅 🍒 🍒 🍒 🥝 🍇 🍉 🍉 🍉 🍌 🍊 🍍 🫐 
-			🍅 🫒 🥥 🍉 🍉 🌭 🍒 🌸 🌸 🪴 🦦 🧚 🐰 ♥️ 🦔  🍊 🍍 🦋 🍓 😻
+        	🍉 🍊 🍌 🍍 🍐 🍑 🍒 🍓 🥝 🍅 🥑 🥑 🍐 🍑 🍒 🍓 🥝 🍅 🥑 🍉 🍉 🍉 🍉 🍉
+			🍑 🐰 🦊 🐭 🐹 🐰 🐦 🐦 🐦 🐦 🐦 🐦 🐦 🌸 🌸 🌸 🌸 🌸 🐸 🐊 🌺 🌻 🌼 🍄
+			🍇 🍇 🍈 🍉 🍊 🍋 🐰 🐰 🐰 🐰 🐰 🐰 🐰 🍋‍🟩 🍌 🍍 🥭 🍎 🍏 🍐 🍑 🍒 🍒 🍒
+			🍒 🍓 🫐 🥝 🌺 🍄 🍄 🍅 🍆 🥕 🌽 🍑 🍅 🍒 🍒 🍒 🥝 🍇 🍉 🍉 🍉 🍌 🍊 🍍
+			🫐 🍅 🫒 🍎 🍉 🍉 🌭 🍒 🌸 🌸 🍒 🍒 🍏 🐰 🍒 🦔 🍊 🍍 🥭 🍓 🐙 🍒 🍒 🍒
 	`.split(/\s+/)
 
 		let rando = (from: number, to: number) =>
@@ -55,14 +57,43 @@
 			return trailer
 		}
 
+		function shrink(trailer: (typeof trailElements)[0]) {
+			trailer.style.scale = "0.1"
+			trailer.style.opacity = "0"
+		}
+
 		let base = 1
 
+		let alt = false
+
 		window.addEventListener("keydown", event => {
-			if (event.shiftKey) base = rando(2, 4)
+			if (event.shiftKey) base = rando(2, 6)
+			if (event.altKey) alt = true
+			if (event.metaKey) spacing = 0
 		})
+
 		window.addEventListener("keyup", event => {
 			if (!event.shiftKey) base = 1
+			if (!event.altKey) {
+				alt = false
+				for (const [i, e] of Object.entries(trailElements)) {
+					const index = +i
+					const timeout = index * 4
+					setTimeout(() => {
+						shrink(e)
+						e.dataset.edible = "yeah"
+						if (index > 12) {
+							e.addEventListener("transitionend", () => {
+								e.remove()
+								trailElements.splice(index, 1)
+							})
+						}
+					}, timeout)
+				}
+			}
+			if (!event.metaKey) spacing = 10
 		})
+
 		window.addEventListener("blur", () => {
 			base = 0.5
 		})
@@ -73,20 +104,33 @@
 			let s = Math.min(Math.max(nx, ny) / 100, 1)
 			let trailer = createTrailer()
 			trailer.style.opacity = "1"
-			trailer.style.transform = `translate(${x}px, ${y}px) scale(${base + s})`
+			trailer.style.translate = `${x}px ${y}px`
+			trailer.style.scale = "" + (base + s)
+			console.log("" + (base + s))
 
 			requestAnimationFrame(() => {
 				document.body.append(trailer)
 			})
 
-			setTimeout(() => {
-				requestAnimationFrame(() => {
-					trailer.style.transform = `translate(${x}px, ${y}px) scale(0.1)`
-					trailer.style.opacity = "0"
+			setTimeout(function () {
+				requestAnimationFrame(function () {
+					if (alt) {
+					} else {
+						shrink(trailer)
+					}
 				})
 			}, 15)
 
-			setTimeout(() => (trailer.dataset.edible = "yeah"), timeout)
+			function eat() {
+				trailer.dataset.edible = "yeah"
+			}
+
+			setTimeout(function () {
+				if (alt) {
+				} else {
+					eat()
+				}
+			}, timeout)
 		}
 
 		/**
