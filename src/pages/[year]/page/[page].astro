@@ -1,11 +1,9 @@
 ---
 import getEntries, {byRecency} from "../../../entries.ts"
-import type {GetStaticPathsOptions} from "astro"
 import EntryListLayout from "../../../layouts/entry-list-layout.astro"
+import paginateNaturally from "../../../paginate-naturally.ts"
 
-export const getStaticPaths = async function getStaticPaths({
-	paginate,
-}: GetStaticPathsOptions) {
+export const getStaticPaths = async function getStaticPaths() {
 	const entries = (await getEntries()).toSorted(byRecency)
 	const years = Array.from(
 		new Set(entries.map(entry => entry.data.date.getFullYear()))
@@ -14,60 +12,15 @@ export const getStaticPaths = async function getStaticPaths({
 		const filteredPosts = entries.filter(
 			post => post.data.date.getFullYear() === year
 		)
-		return paginate(filteredPosts, {
+		return paginateNaturally(filteredPosts, {
 			params: {year: year.toString()},
-			pageSize: 10,
 		})
 	})
 }
-
-const {page} = Astro.props
-const params = Astro.params
 ---
 
 <EntryListLayout
-	title=`entries from ${params.year} | 🍒`
-	description=`entries from ${params.year} (page ${page.currentPage})}`
-	page={page}
->
-	<Fragment slot="after-header">
-		<header>
-			<h1>
-				<span class="year">{params.year}</span>
-			</h1>
-		</header>
-	</Fragment>
-</EntryListLayout>
-
-<style>
-	h1,
-	p {
-		margin: 0;
-	}
-
-	h1 {
-		font-weight: 350;
-		width: 100%;
-	}
-
-	header {
-		max-width: var(--reading-width);
-		margin: auto;
-		display: flex;
-		place-items: top;
-		background: white;
-		width: 100%;
-		padding: 2em;
-		text-align: center;
-		border-radius: 8px;
-		border: 8px double rgba(200, 0, 255, 0.2);
-	}
-
-	.year {
-		font-weight: 444;
-	}
-
-	.page {
-		color: #96a;
-	}
-</style>
+	preposition="from"
+	matching={Astro.params.year}
+	page={Astro.props.page}
+/>

@@ -1,21 +1,16 @@
 ---
 import getEntries, {byRecency} from "../../../entries.ts"
-import type {GetStaticPathsOptions} from "astro"
 import EntryListLayout from "../../../layouts/entry-list-layout.astro"
+import paginateNaturally from "../../../paginate-naturally.ts"
 
-export const getStaticPaths = async function getStaticPaths({
-	paginate,
-}: GetStaticPathsOptions) {
-	const entries = (await getEntries()).toSorted(byRecency)
-	return paginate(entries, {
-		pageSize: 4,
-	})
+export const getStaticPaths = async function getStaticPaths() {
+	return paginateNaturally((await getEntries()).toSorted(byRecency))
 }
 const {page} = Astro.props
 ---
 
 <EntryListLayout
 	title="🍒 cherries"
-	description={`all my entries ${page.currentPage > 1 ? `(page ${page.currentPage})}` : ""}`}
+	description={`by chee rabbits ${page.currentPage > 1 ? `(page ${page.currentPage})}` : ""}`}
 	page={page}
 />

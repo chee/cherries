@@ -8,3 +8,5 @@ export const THEME_COLOR = "#ffe9ed"
 export const AUTHOR_NAME = "chee"
 
 export const AUTHOR_EMAIL = "cherry@chee.party"
+
+export const PAGE_SIZE = 7

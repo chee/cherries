@@ -1,0 +1,16 @@
+---
+import Navigation from "./navigation.astro"
+import navigation from "./navigation.ts"
+const [next, prev] = await navigation(Astro.params.slug ?? "")
+const prevURL = prev && `/${prev.id}/`
+const prevLabel = prev?.data.title ?? prev?.id
+const nextURL = next && `/${next.id}/`
+const nextLabel = next?.data.title ?? next?.id
+---
+
+<Navigation
+	prevLabel={prevLabel}
+	prevURL={prevURL}
+	nextLabel={nextLabel}
+	nextURL={nextURL}
+/>

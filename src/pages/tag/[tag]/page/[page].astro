@@ -1,87 +1,26 @@
 ---
 import getEntries, {byRecency} from "../../../../entries.ts"
-import type {GetStaticPathsOptions} from "astro"
 import EntryListLayout from "../../../../layouts/entry-list-layout.astro"
+import paginateNaturally from "../../../../paginate-naturally.ts"
 
-export const getStaticPaths = async function getStaticPaths({
-	paginate,
-}: GetStaticPathsOptions) {
+export const getStaticPaths = async function getStaticPaths() {
 	const entries = (await getEntries()).toSorted(byRecency)
 	const tags = Array.from(
 		new Set(entries.flatMap(entry => entry.data.tags || []))
 	)
 	return tags.flatMap(tag => {
 		const filteredPosts = entries.filter(post => post.data.tags?.includes(tag))
-		return paginate(filteredPosts, {
+		return paginateNaturally(filteredPosts, {
 			params: {tag},
-			pageSize: 10,
 		})
 	})
 }
 
-const {page} = Astro.props
-const params = Astro.params
-const {tag} = params
+const {tag} = Astro.params
 ---
 
 <EntryListLayout
-	title=`entries tagged ${tag} | 🍒`
-	description=`entries tagged ${tag} (page ${page.currentPage})}`
-	page={page}
->
-	<Fragment slot="after-header">
-		<header>
-			<h1>
-				entries tagged
-				<span class="tag">{tag}</span>
-			</h1>
-		</header>
-	</Fragment>
-</EntryListLayout>
-
-<style>
-	h1,
-	p {
-		margin: 0;
-	}
-
-	h1 {
-		font-weight: 350;
-		width: 100%;
-	}
-
-	header {
-		max-width: var(--reading-width);
-		margin: auto;
-		display: flex;
-		place-items: top;
-		background: white;
-		width: 100%;
-		padding: 1rem;
-		text-align: center;
-		border-radius: 8px;
-		border: 8px double rgba(200, 0, 255, 0.2);
-	}
-
-	.tag {
-		font-weight: 444;
-		background: yellow;
-		display: inline-flex;
-
-		&::before {
-			content: "“";
-			font-family: var(--mono-family);
-			background: white;
-		}
-
-		&::after {
-			content: "”";
-			font-family: var(--mono-family);
-			background: white;
-		}
-	}
-
-	.page {
-		color: #96a;
-	}
-</style>
+	preposition="tagged"
+	matching={"“" + tag + "”"}
+	page={Astro.props.page}
+/>

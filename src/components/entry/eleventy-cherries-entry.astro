@@ -6,7 +6,8 @@ type Props = CollectionEntry<"eleventyCherries">["data"] & {
 	id: string
 }
 
-const {title, description, date, id, timezone, dateLocale, tags} = Astro.props
+const {title, description, date, id, timezone, dateLocale, tags, plain} =
+	Astro.props
 const slug = id.replaceAll("/", "-")
 ---
 
@@ -15,8 +16,17 @@ const slug = id.replaceAll("/", "-")
 	<header class="entry-header">
 		{title && <h1 class="p-name">{title}</h1>}
 	</header>
-	<div class="e-content">
-		<slot />
+	<div class="e-content" class:list={{plain}}>
+		{
+			plain ? (
+				<code>
+					{/* prettier-ignore */}
+					<pre><slot /></pre>
+				</code>
+			) : (
+				<slot />
+			)
+		}
 	</div>
 	{
 		tags?.length
@@ -237,6 +247,10 @@ const slug = id.replaceAll("/", "-")
 		text-wrap-mode: wrap;
 		white-space-collapse: preserve;
 		/* 		overflow-x: auto; */
+	}
+
+	.e-content.plain {
+		font-size: 14.7px;
 	}
 
 	.e-content :global(p) {

@@ -15,7 +15,6 @@ const {
 	tags,
 
 	draft,
-
 	updated,
 } = Astro.props
 const DEFAULT_TIMEZONE = "Europe/London"
@@ -37,7 +36,9 @@ const slug = id.replaceAll("/", "-")
 
 <article class=`slug-${slug} h-entry`>
 	<header>
-		<h1><a href={"/" + id}>{title}</a></h1>
+		<h1><a href={"/" + id}>{title}</a></h1>{
+			draft && <span class="draft">(draft)</span>
+		}
 	</header>
 	<div class="e-content">
 		<slot />
@@ -163,5 +164,13 @@ const slug = id.replaceAll("/", "-")
 		--tag-fill: white;
 		--tag-transform: none;
 		--tag-padding: 0;
+	}
+
+	.draft {
+		background: deeppink;
+		color: white;
+		font-family: var(--mono-family);
+		font-weight: 900;
+		padding: 0 1em;
 	}
 </style>

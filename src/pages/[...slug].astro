@@ -6,6 +6,7 @@ import EleventyCherriesEntry from "../components/entry/eleventy-cherries-entry.a
 import {render} from "astro:content"
 import getEntries from "../entries.ts"
 import Entry from "../components/entry/entry.astro"
+import {Debug} from "astro:components"
 
 export async function getStaticPaths() {
 	const entries = await getEntries()

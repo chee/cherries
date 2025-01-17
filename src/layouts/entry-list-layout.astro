@@ -8,22 +8,48 @@ import Pagination from "../components/navigation/pagination.astro"
 import EleventyCherriesHead from "../components/head/eleventy-cherries-head.astro"
 import EleventyCherriesImportMap from "../components/head/eleventy-cherries-importmap.astro"
 import type {CollectionEntry} from "astro:content"
-export type Props = {
-	page: Page<CollectionEntry<EntryCollectionName>>
-	title: string
-	description: string
+import type {NaturalPage} from "../paginate-naturally.ts"
+export type Props = (
+	| {
+			title: string
+			description: string
+	  }
+	| {
+			preposition: string
+			matching: string
+	  }
+) & {
+	page: NaturalPage<CollectionEntry<EntryCollectionName>>
 }
-const {page, title, description} = Astro.props
+const props = Astro.props
+const {page} = props
 const hasEleventyCherries = page.data.some(
 	entry => entry.collection == "eleventyCherries"
 )
+const override = "title" in props
 ---
 
-<CherriesLayout title={title} description={description}>
+<CherriesLayout
+	title={override
+		? props.title
+		: `entries ${props.preposition} ${props.matching} | 🍒`}
+	description={override ? props.description : `page ${page.currentPage}`}
+>
 	{hasEleventyCherries && <EleventyCherriesImportMap slot="importmap" />}
 	{hasEleventyCherries && <EleventyCherriesHead slot="head" />}
 	<slot name="header" slot="header" />
 	<slot name="after-header" />
+	{
+		override ? null : (
+			<header>
+				<h1>
+					<span>entries {props.preposition}</span>
+					<span class="matching">{props.matching}</span>
+				</h1>
+			</header>
+		)
+	}
+
 	<main class="h-feed">
 		{
 			page.data.map(async entry => {
@@ -31,6 +57,11 @@ const hasEleventyCherries = page.data.some(
 				if (entry.collection == "eleventyCherries") {
 					return (
 						<EleventyCherriesEntry {...entry.data} id={entry.id}>
+							{/* 
+								for some reason this comment being here stops a
+								space from being generated at the beginning of 
+								plain text posts
+							*/}
 							<Content />
 						</EleventyCherriesEntry>
 					)
@@ -54,5 +85,32 @@ const hasEleventyCherries = page.data.some(
 	}
 	.h-feed > :global(article) {
 		margin-bottom: 2em;
+	}
+
+	header {
+		max-width: var(--reading-width);
+		margin: auto;
+		display: flex;
+		place-items: top;
+		background: white;
+		width: 100%;
+		padding: 1rem;
+		text-align: center;
+		border-radius: 8px;
+		border: 8px double rgba(200, 0, 255, 0.2);
+	}
+
+	h1 {
+		font-weight: 350;
+		width: 100%;
+	}
+
+	.matching {
+		font-weight: 444;
+		background: #ffff0022;
+		padding: 0 0.25em;
+		border-radius: 4px;
+		transform: skewX(-6deg);
+		display: inline-block;
 	}
 </style>

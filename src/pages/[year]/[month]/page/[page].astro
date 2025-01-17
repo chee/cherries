@@ -1,9 +1,9 @@
 ---
-import type {GetStaticPathsOptions} from "astro"
 import getEntries, {byRecency} from "../../../../entries.ts"
 import EntryListLayout from "../../../../layouts/entry-list-layout.astro"
+import paginateNaturally from "../../../../paginate-naturally.ts"
 
-export async function getStaticPaths({paginate}: GetStaticPathsOptions) {
+export async function getStaticPaths() {
 	const entries = (await getEntries()).toSorted(byRecency)
 	const yearByMonth = entries.reduce(
 		(a, b) => {
@@ -27,20 +27,15 @@ export async function getStaticPaths({paginate}: GetStaticPathsOptions) {
 					entry.data.date.getFullYear() == year
 				)
 			})
-			return paginate(filtered, {
-				params: {
-					year: year.toString(),
-					month: month.toString(),
-				},
-				pageSize: 10,
+			return paginateNaturally(filtered, {
+				params: {year: year.toString(), month: month.toString()},
 			})
 		})
 	})
 }
 
-const {page, year, month} = Astro.props
-const params = Astro.params
-const monthName = new Date(2001, +params.month - 1, 1)
+const {month, year} = Astro.params
+const monthName = new Date(2001, +month - 1, 1)
 	.toLocaleString("default", {
 		month: "long",
 	})
@@ -48,50 +43,7 @@ const monthName = new Date(2001, +params.month - 1, 1)
 ---
 
 <EntryListLayout
-	title=`entries from ${monthName} ${params.year} | 🍒`
-	description=`entries from ${monthName} ${params.year} (page ${page.currentPage})}`
-	page={page}
->
-	<Fragment slot="after-header">
-		<header>
-			<h1>
-				<span class="month">{monthName}</span>
-				<span class="year">{params.year}</span>
-			</h1>
-		</header>
-	</Fragment>
-</EntryListLayout>
-
-<style>
-	h1,
-	p {
-		margin: 0;
-	}
-
-	h1 {
-		font-weight: 350;
-		width: 100%;
-	}
-
-	header {
-		max-width: var(--reading-width);
-		margin: auto;
-		display: flex;
-		place-items: top;
-		background: white;
-		width: 100%;
-		padding: 1rem;
-		text-align: center;
-		border-radius: 8px;
-		border: 8px double rgba(200, 0, 255, 0.2);
-	}
-
-	.month,
-	.year {
-		font-weight: 444;
-	}
-
-	.page {
-		color: #96a;
-	}
-</style>
+	preposition="from"
+	matching={monthName + " " + year}
+	page={Astro.props.page}
+/>
