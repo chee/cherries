@@ -3,15 +3,14 @@
 		pointer-events: none;
 		position: absolute;
 		top: 0px;
-		right: 0px;
+		left: 0px;
 		font-size: 40px;
 		height: 1em;
 		width: 1em;
-
 		scale: 0.1;
 		transition:
 			scale 0.2s linear,
-			transate 0.2s linear,
+			translate 0.2s linear,
 			opacity 0.5s ease;
 	}
 </style>
@@ -52,8 +51,10 @@
 			trailer.dataset.edible = "no"
 
 			trailer.innerHTML = getRandom(trailers)
-			trailer.style.top = rando(-10, 10) + "px"
-			trailer.style.left = rando(-10, 10) + "px"
+			;[trailer.style.top, trailer.style.left] = [
+				rando(-10, 10) + "px",
+				rando(-10, 10) + "px",
+			]
 			return trailer
 		}
 
@@ -82,12 +83,10 @@
 					setTimeout(() => {
 						shrink(e)
 						e.dataset.edible = "yeah"
-						if (index > 12) {
-							e.addEventListener("transitionend", () => {
-								e.remove()
-								trailElements.splice(index, 1)
-							})
-						}
+						e.addEventListener("transitionend", () => {
+							e.remove()
+							trailElements.splice(index, 1)
+						})
 					}, timeout)
 				}
 			}
@@ -103,10 +102,15 @@
 			let ny = dy - spacing
 			let s = Math.min(Math.max(nx, ny) / 100, 1)
 			let trailer = createTrailer()
-			trailer.style.opacity = "1"
-			trailer.style.translate = `${x}px ${y}px`
-			trailer.style.scale = "" + (base + s)
-			console.log("" + (base + s))
+
+			if (
+				x + 55 < document.body.scrollWidth &&
+				y + 55 < document.body.scrollHeight
+			) {
+				trailer.style.opacity = "1"
+				trailer.style.translate = `${x}px ${y}px`
+				trailer.style.scale = "" + (base + s)
+			}
 
 			requestAnimationFrame(() => {
 				document.body.append(trailer)
