@@ -4,19 +4,8 @@ type Props = CollectionEntry<"entries">["data"] & {
 	id: string
 }
 
-import Bar from "./bar.astro"
-
-const {
-	title,
-	description,
-	date,
-	id,
-	heroImage,
-	tags,
-
-	draft,
-	updated,
-} = Astro.props
+const {title, description, date, id, heroImage, tags, song, draft, updated} =
+	Astro.props
 const DEFAULT_TIMEZONE = "Europe/London"
 const DEFAULT_DATE_LOCALE = "en-CA"
 
@@ -29,8 +18,9 @@ const dateLocale =
 	"dateLocale" in Astro.props
 		? Astro.props.dateLocale || DEFAULT_DATE_LOCALE
 		: DEFAULT_DATE_LOCALE
-import {toTimeZoneName, toString} from "../../time.ts"
+import {toTimeZoneName} from "../../time.ts"
 import Tag from "./tag.astro"
+import Song from "../song/song.tsx"
 const slug = id.replaceAll("/", "-")
 ---
 
@@ -40,6 +30,7 @@ const slug = id.replaceAll("/", "-")
 			draft && <span class="draft">(draft)</span>
 		}
 	</header>
+	{song && <Song {...song} client:load />}
 	<div class="e-content">
 		<slot />
 	</div>
@@ -94,14 +85,25 @@ const slug = id.replaceAll("/", "-")
 		text-align: right;
 		flex-direction: column;
 	}
+	article :global(.song) {
+		/* background: var(--header-fill); */
+	}
 	article {
+		--header-fill: #ffaacc33;
+		--box-shadow-fill: #fac;
+		--long-box-shadow: 1px 1px var(--box-shadow-fill),
+			2px 2px var(--box-shadow-fill), 3px 3px var(--box-shadow-fill),
+			4px 4px var(--box-shadow-fill), 5px 5px var(--box-shadow-fill);
+		--box-shadow: 3px 3px var(--box-shadow-fill);
+		--entry-fill: white;
+		--entry-border-line: black;
 		max-width: 84ex;
 		margin: auto;
 		font-size: 1em;
-		border: 1px solid black;
+		border: 1px solid var(--entry-border-line);
 		padding-top: 0px;
-		box-shadow: 3px 3px 0px 0px #fac;
-		background: white;
+		box-shadow: var(--box-shadow);
+		background: var(--entry-fill);
 	}
 
 	header {

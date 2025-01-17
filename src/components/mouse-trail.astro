@@ -77,18 +77,17 @@
 			if (!event.shiftKey) base = 1
 			if (!event.altKey) {
 				alt = false
-				for (const [i, e] of Object.entries(trailElements)) {
-					const index = +i
-					const timeout = index * 4
-					setTimeout(() => {
-						shrink(e)
-						e.dataset.edible = "yeah"
-						e.addEventListener("transitionend", () => {
-							e.remove()
-							trailElements.splice(index, 1)
-						})
-					}, timeout)
-				}
+				// for (const [i, e] of Object.entries(trailElements)) {
+				// 	const index = +i
+				// 	const timeout = index * 10
+				// 	e.addEventListener("transitionend", () => {
+				// 		e.remove()
+				// 	})
+				// 	setTimeout(() => {
+				// 		shrink(e)
+				// 		e.dataset.edible = "yeah"
+				// 	}, timeout)
+				// }
 			}
 			if (!event.metaKey) spacing = 10
 		})
@@ -118,9 +117,9 @@
 
 			setTimeout(function () {
 				requestAnimationFrame(function () {
+					shrink(trailer)
 					if (alt) {
 					} else {
-						shrink(trailer)
 					}
 				})
 			}, 15)
@@ -130,9 +129,9 @@
 			}
 
 			setTimeout(function () {
+				eat()
 				if (alt) {
 				} else {
-					eat()
 				}
 			}, timeout)
 		}

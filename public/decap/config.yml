@@ -1,0 +1,43 @@
+backend:
+  name: git-gateway
+  branch: main
+media_folder: "public/upload"
+public_folder: "/upload"
+collections:
+  - name: "entries"
+    label: "blog"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{year}}/{{{slug}}"
+    fields:
+      - {label: "title", name: "title", widget: "string", required: false}
+      - {
+          label: "description",
+          name: "description",
+          widget: "string",
+          required: false,
+        }
+      - {label: "date", name: "date", widget: "datetime"}
+      - {label: "update", name: "update", widget: "datetime", required: false}
+      - {
+          label: "date locale",
+          name: "dateLocale",
+          widget: "string",
+          required: false,
+        }
+      - {label: "timezone", name: "timezone", widget: "string", required: false}
+      - {
+          label: "tags",
+          name: "tags",
+          widget: "list",
+          default: [],
+          required: false,
+        }
+      - label: "song"
+        name: "song"
+        widget: "object"
+        required: false
+        fields:
+          - {label: art, name: art, widget: image, required: false}
+          - {label: music, name: music, widget: file}
+      - {label: "body", name: "body", widget: "markdown"}

@@ -5,17 +5,24 @@ import {localFeedLoader} from "./local-feed-loader.ts"
 const entries = defineCollection({
 	loader: glob({base: "./src/entries", pattern: "**/*.{md,mdx}"}),
 	// Type-check frontmatter using a schema
-	schema: z.object({
-		title: z.string().optional(),
-		description: z.string().optional(),
-		date: z.coerce.date(),
-		updated: z.coerce.date().optional(),
-		heroImage: z.string().optional(),
-		tags: z.array(z.string()).optional(),
-		draft: z.boolean().optional(),
-		timezone: z.string().optional(),
-		dateLocale: z.string().optional(),
-	}),
+	schema: context =>
+		z.object({
+			title: z.string().optional(),
+			description: z.string().optional(),
+			date: z.coerce.date(),
+			updated: z.coerce.date().optional(),
+			tags: z.array(z.string()).optional(),
+			draft: z.boolean().optional(),
+			timezone: z.string().optional(),
+			dateLocale: z.string().optional(),
+			opengraphImageURL: z.string().optional(),
+			song: z
+				.object({
+					art: context.image().optional(),
+					music: z.string(),
+				})
+				.optional(),
+		}),
 })
 
 const freeTrainStations = defineCollection({

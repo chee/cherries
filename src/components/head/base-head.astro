@@ -5,13 +5,18 @@ import MouseTrail from "../mouse-trail.astro"
 interface Props {
 	title: string
 	description?: string
+	opengraphImageURL?: string
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
 const {title, description} = Astro.props
 
-const {url, site} = Astro
+const {url} = Astro
+const defaultOpengraphImageURL =
+	url.protocol + "//" + url.host + url.pathname.replace(/\/$/, "") + ".og.png"
+const opengraphImageURL =
+	Astro.props.opengraphImageURL || defaultOpengraphImageURL
 ---
 
 <meta charset="utf-8" />
@@ -86,26 +91,12 @@ const {url, site} = Astro
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 {description && <meta property="og:description" content={description} />}
-<meta
-	property="og:image"
-	content={url.protocol +
-		"//" +
-		url.host +
-		url.pathname.replace(/\/$/, "") +
-		".og.png"}
-/>
+<meta property="og:image" content={opengraphImageURL} />
 
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 {description && <meta property="twitter:description" content={description} />}
-<meta
-	property="twitter:image"
-	content={url.protocol +
-		"//" +
-		url.host +
-		url.pathname.replace(/\/$/, "") +
-		".og.png"}
-/>
+<meta property="twitter:image" content={opengraphImageURL} />
 <MouseTrail />
 <slot />

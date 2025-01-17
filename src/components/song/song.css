@@ -1,0 +1,127 @@
+.song {
+	width: 100%;
+	margin: auto;
+	display: flex;
+	place-items: center;
+	place-content: space-between;
+	img {
+		margin: 0;
+		width: 4rem;
+		height: 4rem;
+	}
+	/* border-start-start-radius: 5px; */
+	overflow: hidden;
+	height: 4rem;
+	background: white;
+}
+
+.song-player {
+	width: 100%;
+	display: flex;
+	place-content: center;
+	place-items: center;
+	gap: 0.5em;
+	font-size: 1rem;
+	margin-inline: 1rem;
+}
+
+.song-player__play {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 2.8em;
+	padding: 0;
+	border: 0;
+	background: #ffe9e9;
+	display: flex;
+	text-align: center;
+	place-content: center;
+	place-items: center;
+	--shadow-color: #f0d1d1;
+	box-shadow:
+		1px 1px var(--shadow-color),
+		2px 2px var(--shadow-color),
+		3px 3px var(--shadow-color);
+	position: relative;
+	/* &[aria-label="play"]:hover {
+		translate: -1px -1px;
+		box-shadow:
+			1px 1px var(--shadow-color),
+			2px 2px var(--shadow-color),
+			3px 3px var(--shadow-color),
+			4px 4px var(--shadow-color);
+	} */
+	&[aria-label="pause"]:active,
+	&[aria-label="pause"],
+	&[aria-label="pause"]:hover,
+	&:active,
+	&:active:hover {
+		/* transition: box-shadow 0.5s; */
+		/* background: #fff7f7; */
+		translate: 3px 3px;
+		box-shadow:
+			inset 1px 1px var(--shadow-color),
+			inset 2px 2px var(--shadow-color);
+	}
+	&[aria-label="pause"]:not(:active) {
+		box-shadow: inset 1px 1px var(--shadow-color);
+		translate: 2px 2px;
+	}
+	/* &[aria-label="pause"]:not(:hover) {
+		background: white;
+		box-shadow: 2px 2px transparent;
+	} */
+	svg {
+		fill: deeppink;
+		height: 1.4rem;
+	}
+	&[aria-label="play"] svg {
+		margin-left: 4px;
+	}
+}
+
+.song-player__meta {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-top: calc(6px + 1rem);
+}
+
+.song-player__times {
+	display: flex;
+	place-content: space-between;
+	place-items: flex-end;
+	padding: 4px 2px;
+	opacity: 0.64;
+	font-size: 12px;
+}
+
+.song-playbar {
+	flex: 1;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+}
+
+.song-playbar__track {
+	background-color: #333;
+	position: relative;
+	height: 0.5rem;
+	width: 100%;
+	border-radius: 1rem;
+	overflow: hidden;
+}
+
+.song-playbar__fill {
+	position: absolute;
+	background-color: deeppink;
+	height: 100%;
+}
+
+.song-playbar__thumb {
+	display: block;
+	width: 2px;
+	height: 2px;
+}
