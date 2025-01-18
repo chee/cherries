@@ -1,78 +1,112 @@
+:root {
+	--song-height: 4em;
+	--song-width: 100%;
+	--song-fill: white;
+	--song-play-size: var(--song-height);
+	--song-play-fill: #ffe9e9;
+	--song-play-shadow-color: #f0d1d1;
+	--song-playbar-track-fill: #333;
+	--song-playbar-progress-fill: deeppink;
+	--song-play-icon-fill: var(--song-playbar-progress-fill);
+	--song-playbar-height: 0.5em;
+}
+
 .song {
-	width: 100%;
+	font-size: 1rem;
+	height: var(--song-height);
+	width: var(--song-width);
 	margin: auto;
 	display: flex;
 	place-items: center;
 	place-content: space-between;
 	img {
 		margin: 0;
-		width: 4rem;
-		height: 4rem;
+		width: var(--song-height);
+		height: var(--song-height);
 	}
-	/* border-start-start-radius: 5px; */
 	overflow: hidden;
-	height: 4rem;
-	background: white;
+	background: var(--song-fill);
+}
+
+.song img ~ .song-player {
+	margin-inline: 0.825em;
 }
 
 .song-player {
 	width: 100%;
+}
+
+@keyframes fades {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.song-player--audio {
+	animation: fades forwards 5s ease-in;
+	border-radius: 100px;
+	background: white;
+	color: black;
+	box-shadow:
+		2px 2px purple,
+		-2px -2px yellow;
+}
+
+.song-player--pretty {
+	animation: fades forwards 0.1s linear;
+	height: var(--song-height);
 	display: flex;
 	place-content: center;
 	place-items: center;
-	gap: 0.5em;
-	font-size: 1rem;
-	margin-inline: 1rem;
+	gap: 0.825em;
 }
 
 .song-player__play {
-	width: 3rem;
-	height: 3rem;
-	border-radius: 2.8em;
 	padding: 0;
 	border: 0;
-	background: #ffe9e9;
+	width: var(--song-play-size);
+	height: var(--song-play-size);
+	border-radius: var(--song-play-size);
+	background: var(--song-play-fill);
 	display: flex;
 	text-align: center;
 	place-content: center;
 	place-items: center;
-	--shadow-color: #f0d1d1;
 	box-shadow:
-		1px 1px var(--shadow-color),
-		2px 2px var(--shadow-color),
-		3px 3px var(--shadow-color);
+		inset 1px 1px white,
+		1px 1px var(--song-play-shadow-color),
+		2px 2px var(--song-play-shadow-color),
+		3px 3px var(--song-play-shadow-color);
 	position: relative;
-	/* &[aria-label="play"]:hover {
+	&[aria-label="play"]:hover {
 		translate: -1px -1px;
 		box-shadow:
-			1px 1px var(--shadow-color),
-			2px 2px var(--shadow-color),
-			3px 3px var(--shadow-color),
-			4px 4px var(--shadow-color);
-	} */
+			inset 1px 1px white,
+			1px 1px var(--song-play-shadow-color),
+			2px 2px var(--song-play-shadow-color),
+			3px 3px var(--song-play-shadow-color),
+			4px 4px var(--song-play-shadow-color);
+	}
 	&[aria-label="pause"]:active,
 	&[aria-label="pause"],
 	&[aria-label="pause"]:hover,
 	&:active,
 	&:active:hover {
-		/* transition: box-shadow 0.5s; */
-		/* background: #fff7f7; */
-		translate: 3px 3px;
+		translate: 2px 2px;
 		box-shadow:
-			inset 1px 1px var(--shadow-color),
-			inset 2px 2px var(--shadow-color);
+			inset 1px 1px var(--song-play-shadow-color),
+			inset 2px 2px var(--song-play-shadow-color);
 	}
 	&[aria-label="pause"]:not(:active) {
-		box-shadow: inset 1px 1px var(--shadow-color);
-		translate: 2px 2px;
+		box-shadow: inset 1px 1px var(--song-play-shadow-color);
+		translate: 1px 1px;
 	}
-	/* &[aria-label="pause"]:not(:hover) {
-		background: white;
-		box-shadow: 2px 2px transparent;
-	} */
 	svg {
-		fill: deeppink;
-		height: 1.4rem;
+		fill: var(--song-play-icon-fill);
+		height: 1.4em;
 	}
 	&[aria-label="play"] svg {
 		margin-left: 4px;
@@ -83,7 +117,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	margin-top: calc(6px + 1rem);
+	margin-top: calc(6px + 1em);
 }
 
 .song-player__times {
@@ -106,22 +140,35 @@
 }
 
 .song-playbar__track {
-	background-color: #333;
+	background-color: var(--song-playbar-track-fill);
 	position: relative;
-	height: 0.5rem;
+	height: var(--song-playbar-height);
 	width: 100%;
-	border-radius: 1rem;
+	border-radius: 1em;
 	overflow: hidden;
+	opacity: 0.5;
+	transition: opacity 0.5s linear;
+	.song-playbar--canplay & {
+		opacity: 0.8;
+	}
+	.song-playbar--canplaythrough & {
+		opacity: 1;
+	}
 }
 
 .song-playbar__fill {
 	position: absolute;
-	background-color: deeppink;
+	background-color: var(--song-playbar-progress-fill);
 	height: 100%;
 }
 
 .song-playbar__thumb {
 	display: block;
 	width: 2px;
-	height: 2px;
+	height: calc(var(--song-playbar-height) - 2px);
+	top: 1px;
+	&:focus {
+		outline: 1px solid white;
+		background: var(--song-playbar-progress-fill);
+	}
 }

@@ -5,8 +5,8 @@ tags:
   - weekly
 draft: true
 song:
-  art: ./beingthere2.jpg
-  music: /music/being-there.flac
+  art: ./escalator.webp
+  music: /music/thwacc.flac
 ---
 
 hello world.
@@ -18,3 +18,12 @@ wandered around barbican instead and it was very nice.
 i rewrote the code that runs my blog.
 
 sorry to alice if i've broken my rss feed again. i probably have.
+
+import Song from "../../components/song/song.tsx"
+import escalator from "./escalator.webp"
+// import {Image} from "astro:assets"
+
+<Song music="/eleventy-cherries-support/media/fall.flac" client:idle />
+<Song music="/eleventy-cherries-support/media/fall.flac" client:load />
+<Song music="/eleventy-cherries-support/media/fall.flac" client:load />
+<Song music="/eleventy-cherries-support/media/fall.flac" client:immediamente />

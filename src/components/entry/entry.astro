@@ -4,8 +4,7 @@ type Props = CollectionEntry<"entries">["data"] & {
 	id: string
 }
 
-const {title, description, date, id, heroImage, tags, song, draft, updated} =
-	Astro.props
+const {title, description, date, id, tags, song, draft, updated} = Astro.props
 const DEFAULT_TIMEZONE = "Europe/London"
 const DEFAULT_DATE_LOCALE = "en-CA"
 
@@ -30,7 +29,9 @@ const slug = id.replaceAll("/", "-")
 			draft && <span class="draft">(draft)</span>
 		}
 	</header>
-	{song && <Song {...song} client:load />}
+	<div class="song-wrapper">
+		{song && <Song {...song} client:load />}
+	</div>
 	<div class="e-content">
 		<slot />
 	</div>
@@ -79,15 +80,20 @@ const slug = id.replaceAll("/", "-")
 		display: flex;
 		justify-content: space-between;
 	}
+
 	.eot {
 		display: flex;
 		justify-content: space-between;
 		text-align: right;
 		flex-direction: column;
 	}
-	article :global(.song) {
-		/* background: var(--header-fill); */
+
+	.song-wrapper {
+		--song-fill: var(--header-fill);
+		--song-play-fill: color-mix(in srgb, var(--header-fill), white 64%);
+		--song-play-shadow-color: color-mix(in srgb, var(--header-fill), black 2%);
 	}
+
 	article {
 		--header-fill: #ffaacc33;
 		--box-shadow-fill: #fac;

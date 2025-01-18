@@ -1,26 +1,58 @@
 import type {CollectionEntry} from "astro:content"
-import {createEffect, createSignal, For, onMount, Show} from "solid-js"
+import {
+	createEffect,
+	createResource,
+	createSignal,
+	onMount,
+	Show,
+	Suspense,
+} from "solid-js"
 import "./song.css"
 import {Slider} from "@kobalte/core/slider"
-import {createMutable} from "solid-js/store"
 import {Button} from "@kobalte/core/button"
 import play from "./play.svg?raw"
 import pause from "./pause.svg?raw"
+import {getImage} from "astro:assets"
 
-interface AudioState {
-	time: number
-	duration: number
-	canplay: boolean
-	seeking: boolean
-	paused: boolean
+export function Image(props: {
+	src: NonNullable<
+		NonNullable<CollectionEntry<"entries">["data"]["song"]>["art"]
+	>
+	class?: string
+	alt?: string
+}) {
+	const [image] = createResource(() => getImage(props))
+	const additional = {} as Record<any, any>
+	if (import.meta.env.DEV) {
+		additional["data-image-component"] = "true"
+	}
+	return (
+		<Suspense>
+			<img src={image()?.src} {...image()?.attributes} alt={props.alt || ""} />
+		</Suspense>
+	)
 }
 
-function Playbar(
-	props: AudioState & {
-		time: number
-		setTime(time: number): void
-	}
-) {
+export const modifiers = (
+	root: string,
+	opts: Record<string, boolean | undefined>
+) => {
+	return Object.entries(opts).reduce((className, [name, value]) => {
+		if (value) {
+			return className + ` ${root}--${name}`
+		}
+		return className
+	}, root)
+}
+
+function Playbar(props: {
+	time: number
+	duration: number
+	setTime(time: number): void
+	canplay: boolean
+	canplaythrough: boolean
+	paused: boolean
+}) {
 	return (
 		<Slider
 			onChange={values => {
@@ -30,7 +62,11 @@ function Playbar(
 			onChangeEnd={values => {
 				console.log(values[0])
 			}}
-			class="song-playbar"
+			class={modifiers("song-playbar", {
+				canplay: props.canplay,
+				canplaythrough: props.canplaythrough,
+				paused: props.paused,
+			})}
 			minValue={0}
 			maxValue={props.duration}
 			value={[props.time]}>
@@ -52,41 +88,35 @@ export default function Song(
 		setEnhance(true)
 	})
 
-	const state = createMutable<AudioState>({
-		time: 0,
-		duration: 100,
-		canplay: false,
-		seeking: false,
-		paused: true,
-	})
-
 	const [time, setTime] = createSignal(0)
+	const [duration, setDuration] = createSignal(0)
+	const [paused, setPaused] = createSignal(true)
+	const [canplay, setCanplay] = createSignal(false)
+	const [canplaythrough, setCanplaythrough] = createSignal(false)
 
 	let audio!: HTMLAudioElement
 
 	onMount(() => {
-		state.duration = audio.duration
+		setDuration(audio.duration)
 	})
 
 	return (
 		<article class="song">
 			<Show when={props.art}>
-				<img src={props.art!.src} />
+				<Image src={props.art!} />
 			</Show>
 			<audio
 				class="song-player song-player--audio"
 				controls={!enhance()}
 				src={props.music}
-				oncanplay={() => (state.canplay = true)}
-				onseeking={() => (state.seeking = true)}
-				onseeked={() => (state.seeking = false)}
+				oncanplay={() => setCanplay(true)}
+				oncanplaythrough={() => setCanplaythrough(true)}
 				ontimeupdate={() => {
-					console.log(state.seeking)
 					setTime(audio.currentTime)
 				}}
-				onplaying={() => (state.paused = false)}
-				onpause={() => (state.paused = true)}
-				ondurationchange={() => (state.duration = audio.duration)}
+				onplaying={() => setPaused(false)}
+				onpause={() => setPaused(true)}
+				ondurationchange={() => setDuration(audio.duration)}
 				ref={audio}
 			/>
 			<Show when={enhance()}>
@@ -94,22 +124,25 @@ export default function Song(
 					<div>
 						<Button
 							class="song-player__play"
-							onclick={() => (state.paused ? audio.play() : audio.pause())}
-							aria-label={state.paused ? "play" : "pause"}
-							innerHTML={state.paused ? play : pause}></Button>
+							onclick={() => (paused() ? audio.play() : audio.pause())}
+							aria-label={paused() ? "play" : "pause"}
+							innerHTML={paused() ? play : pause}></Button>
 					</div>
 					<div class="song-player__meta">
 						<Playbar
-							{...state}
+							time={time()}
+							duration={duration()}
+							canplay={canplay()}
+							canplaythrough={canplaythrough()}
+							paused={paused()}
 							setTime={time => {
 								setTime(time)
 								audio.currentTime = time
 							}}
-							time={time()}
 						/>
 						<div class="song-player__times">
 							<Time time={time()} />
-							<Time time={state.duration} />
+							<Time time={duration()} />
 						</div>
 					</div>
 				</div>
