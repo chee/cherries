@@ -44,7 +44,7 @@ export default defineConfig({
 		}),
 		solid(),
 	],
-	adapter: netlify(),
+
 	vite: {
 		plugins: [yaml(), wasm(), base64Loader],
 	},
