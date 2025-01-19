@@ -4,14 +4,11 @@ import mdx from "@astrojs/mdx"
 import sitemap from "@astrojs/sitemap"
 
 import solid from "@astrojs/solid-js"
-import netlify from "@astrojs/netlify"
 import yaml from "@rollup/plugin-yaml"
 import wasm from "vite-plugin-wasm"
 import lychee from "./lychee-theme.ts"
 import civet from "@danielx/civet/astro"
 import fs from "fs"
-
-import immediamenteDirective from "./astro/immediamente-directive/register.js"
 
 const base64Loader = {
 	name: "base64-loader",
@@ -36,7 +33,6 @@ const base64Loader = {
 export default defineConfig({
 	site: "https://chee.party",
 	integrations: [
-		immediamenteDirective(),
 		mdx({shikiConfig: {theme: lychee}, optimize: true}),
 		sitemap(),
 		civet({
@@ -44,7 +40,6 @@ export default defineConfig({
 		}),
 		solid(),
 	],
-
 	vite: {
 		plugins: [yaml(), wasm(), base64Loader],
 	},
@@ -57,8 +52,8 @@ export default defineConfig({
 		contentIntellisense: true,
 		svg: true,
 	},
-	prefetch: {
-		prefetchAll: true,
-		defaultStrategy: "viewport",
-	},
+	// prefetch: {
+	// prefetchAll: true,
+	// defaultStrategy: "viewport",
+	// },
 })
