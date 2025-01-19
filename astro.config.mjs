@@ -52,8 +52,8 @@ export default defineConfig({
 		contentIntellisense: true,
 		svg: true,
 	},
-	// prefetch: {
-	// prefetchAll: true,
-	// defaultStrategy: "viewport",
-	// },
+	prefetch: {
+		prefetchAll: true,
+		defaultStrategy: "viewport",
+	},
 })
