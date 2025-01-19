@@ -8,7 +8,11 @@ import Navigation from "../navigation/entry-navigation.astro"
 </footer>
 
 <style>
+	:root {
+		--page-footer-top-margin: 2em;
+	}
 	footer {
+		margin-top: var(--page-footer-top-margin);
 		background: black;
 		--navigation-line: white;
 		--navigation-hover-line: #ff4a90;

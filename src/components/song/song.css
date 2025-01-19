@@ -2,7 +2,7 @@
 	--song-height: 4em;
 	--song-width: 100%;
 	--song-fill: white;
-	--song-play-size: var(--song-height);
+	--song-play-size: 2.4em;
 	--song-play-fill: #ffe9e9;
 	--song-play-shadow-color: #f0d1d1;
 	--song-playbar-track-fill: #333;
@@ -105,8 +105,9 @@
 		translate: 1px 1px;
 	}
 	svg {
+		font-size: 1em;
 		fill: var(--song-play-icon-fill);
-		height: 1.4em;
+		height: 1em;
 	}
 	&[aria-label="play"] svg {
 		margin-left: 4px;

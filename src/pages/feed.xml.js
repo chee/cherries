@@ -1,9 +1,9 @@
 import rss from "@astrojs/rss"
-import {getCollection} from "astro:content"
 import {SITE_TITLE, SITE_DESCRIPTION} from "../consts"
+import getEntries from "../entries.ts"
 
 export async function GET(context) {
-	const entries = (await getCollection("entries")).filter(doc =>
+	const entries = (await getEntries()).filter(doc =>
 		import.meta.env.PROD ? !doc.data.draft : true
 	)
 	return rss({
@@ -13,6 +13,8 @@ export async function GET(context) {
 		stylesheet: "/stylesheet.xsl",
 		items: entries.map(entry => ({
 			...entry.data,
+			title: entry.data.title ?? "",
+			description: entry.data.description ?? "",
 			pubDate: entry.data.date,
 			link: `/${entry.id}/`,
 		})),

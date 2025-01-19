@@ -9,95 +9,92 @@ import Status from "../components/status.tsx"
 ---
 
 <!doctype html>
-<html lang="en-CA">
+<html lang="en-CA" class="root">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION}>
 			<slot name="importmap" slot="importmap" />
 			<slot name="head" />
 		</BaseHead>
 	</head>
-	<body>
+	<body class="body">
 		<Header />
 		<main>
-			<!-- <figure class="status">
-				<figcaption>current status</figcaption>
-				<article>
-					<Status client:only="solid-js">
-						<span slot="fallback">:)</span>
-					</Status>
-				</article>
-			</figure> -->
+			<section>
+				<p>hi! i'm ✨ <b>chee rabbits</b> ✨</p>
 
-			<p>hi! i'm ✨ <b>chee rabbits</b> ✨</p>
+				<p>welcome to my website.</p>
 
-			<p>welcome to my website.</p>
+				<p>
+					you can e-mail me at
+					<a href="mailto:home@chee.party"> party@chee.party</a>
+				</p>
 
-			<p>
-				you can e-mail me at
-				<a href="mailto:home@chee.party"> party@chee.party</a>
-			</p>
+				<p>
+					visit <a href="https://quietparty.net"
+						><Clouds style="margin-right: .5ch" />quiet party</a
+					>
+					to listen to my music
+				</p>
 
-			<p>
-				visit <a href="https://quietparty.net"
-					><Clouds style="margin-right: .5ch" />quiet party</a
-				>
-				to listen to my music
-			</p>
+				<p>
+					i publish source code on <a href="https://github.com/chee"
+						>microsoft github.com/chee</a
+					>
+				</p>
 
-			<p>
-				i publish source code on <a href="https://github.com/chee"
-					>microsoft github.com/chee</a
-				>
-			</p>
-
-			<p>
-				and i write a blog here at
-				<a href="/cherries/"
-					><Cherries
-						stem="green"
-						cherries="red"
-						style="margin-right: .25ch"
-					/>cherries</a
-				>
-			</p>
+				<p>
+					and i write a blog here at
+					<a href="/cherries/"
+						><Cherries
+							stem="green"
+							cherries="red"
+							style="margin-right: .25ch"
+						/>cherries</a
+					>
+				</p>
+			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
 
 <style>
+	.root {
+		background: #fcda40;
+		--scrollbar-back: #fcda40;
+		--scrollbar-front: #fcfcfc;
+	}
+
+	a {
+		/* display: inline-flex; */
+	}
+
 	main {
 		font-family: var(--text-family);
-		padding: 1em;
 		font-size: 1.4em;
-	}
-
-	.status {
-		--radius: 4px;
-		font-family: monospace;
-		font-size: 0.5em;
-		float: right;
-		padding: 0;
-		margin: 0;
-		display: inline-flex;
+		display: flex;
 		flex-direction: column;
-		border: 2px solid hsl(163, 100%, 40%);
-		max-width: 6rem;
-		text-wrap: balance;
-		text-align: center;
-		border-radius: var(--radius);
-		overflow: hidden;
-
-		figcaption {
-			border: 2px solid hsl(163, 100%, 35%);
-			padding: 0.25em;
-		}
-
-		article {
-			background: hsl(163, 100%, 50%);
-			border: 2px solid hsl(163, 100%, 35%);
-			border-top: 0;
-			padding: 0.5em 0.25em;
+		margin: auto;
+		place-items: center;
+		place-content: center;
+		height: 100%;
+		padding: 1rem;
+		> section {
+			display: flex;
+			flex-direction: column;
+			gap: 1em;
+			border-radius: 8px;
+			border: 1px solid;
+			padding: 1em;
+			box-shadow:
+				-1px -1px black,
+				2px 2px black,
+				3px 3px black,
+				4px 4px black,
+				5px 5px black;
+			background: white;
+			animation: shivering-shadow 5s ease-in-out infinite alternate;
 		}
 	}
+	@media (min-width: );
 </style>

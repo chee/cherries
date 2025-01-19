@@ -1,98 +1,31 @@
-@font-face {
-	font-family: Jost;
-	font-style: normal;
-	font-weight: 100 900;
-	font-display: fallback;
-	src: url("/fonts/jost-vf.ttf") format("truetype");
-}
-
-@font-face {
-	font-family: Jost;
-	font-style: italic;
-	font-weight: 100 900;
-	font-display: fallback;
-	src: url("/fonts/jost-vf.ttf") format("truetype");
-}
-
-@font-face {
-	font-family: "Iosevka QP";
-	font-style: normal;
-	font-weight: 100 200;
-	font-display: fallback;
-	src: url("/fonts/iosevka-qp-light.woff2") format("woff2");
-}
-
-@font-face {
-	font-family: "Iosevka QP";
-	font-style: normal;
-	font-weight: 300 400;
-	font-display: fallback;
-	src: url("/fonts/iosevka-qp-regular.woff2") format("woff2");
-}
-
-@font-face {
-	font-family: "Iosevka QP";
-	font-style: normal;
-	font-weight: 500 900;
-	font-display: fallback;
-	src: url("/fonts/iosevka-qp-bold.woff2") format("woff2");
-}
-
-@font-face {
-	font-family: "Iosevka QP";
-	font-style: italic;
-	font-weight: 100 200;
-	font-display: fallback;
-	src: url("/fonts/iosevka-qp-lightitalic.woff2") format("woff2");
-}
-
-@font-face {
-	font-family: "Iosevka QP";
-	font-style: italic;
-	font-weight: 300 400;
-	font-display: fallback;
-	src: url("/fonts/iosevka-qp-italic.woff2") format("woff2");
-}
-@font-face {
-	font-family: "Iosevka QP";
-	font-style: italic;
-	font-weight: 500 900;
-	font-display: fallback;
-	src: url("/fonts/iosevka-qp-bolditalic.woff2") format("woff2");
-}
+@import "./preflight.css";
+@import "./font-face.css";
+@import "./palette.css";
 
 :root {
-	--green: #33ffcc;
-	--blue: #33ccff;
-	--dark-blue: #03c;
-	--red: #ff2a50;
-	--orange: #ff7c7a;
-	--mustard: #fe8;
-	--lemon: #ff8;
-	--f-blue: #2269ff;
-	--cherries-fill: #ffe9ed;
-	--cherries-line: #cc2959;
+	--offset: color-mix(in srgb, var(--page-fill) 90%, var(--link-line));
 
-	--fill: white;
-	--line: black;
-	--offset: color-mix(in srgb, var(--fill) 96%, var(--link-line));
-
-	--page-fill: var(--fill);
-	--page-line: var(--line);
-	--shaded-fill: color-mix(in srgb, var(--fill) 90%, var(--line));
-	--shaded-line: var(--line);
+	--selection-fill: color-mix(
+		in srgb,
+		var(--blue-crayola),
+		var(--page-fill) 50%
+	);
+	--page-fill: white;
+	--page-line: black;
+	--shaded-fill: color-mix(in srgb, var(--page-fill) 90%, var(---page-line));
+	--shaded-line: var(--page-line);
 	--banner-fill: var(--shaded-fill);
 	--meta-theme-color: var(--banner-fill);
 	--banner-line: var(--shaded-line);
 	--cherry-colour: var(--cherries-line);
-	--contrast-fill: var(--line);
-	--contrast-line: var(--fill);
+	--contrast-fill: var(--page-line);
+	--contrast-line: var(--page-fill);
 
 	--link-fill: transparent;
 	--link-line: var(--f-blue);
 
-	--entry-fill: var(--fill);
-	--entry-line: var(--line);
+	--entry-fill: var(--page-fill);
+	--entry-line: var(--page-line);
 
 	--entry-bar-fill: var(--contrast-fill);
 	--entry-bar-line: var(--contrast-line);
@@ -124,9 +57,6 @@
 	--reading-width: 84ex;
 	--entry-radius: 14px;
 
-	font-size: 1.2em;
-	line-height: 1.2;
-
 	--background-size: 72px;
 
 	--code-comment: #a2b2d4;
@@ -140,11 +70,6 @@
 	--code-regex-fill: #ff000011;
 	--code-regex: black;
 
-	height: 100%;
-	background-color: var(--page-fill);
-	color: var(--page-line);
-	overscroll-behavior-y: none;
-
 	--code-fill: var(--offset);
 	--inline-code-fill: var(--code-fill);
 	--code-line: var(--line);
@@ -153,29 +78,39 @@
 
 	--canvas-fill: var(--shaded-fill);
 	--canvas-line: var(--shaded-line);
+	--scrollbar-front: var(--shaded-line);
+	--scrollbar-back: var(--shaded-fill);
 
 	--tag-fill: var(--lemon);
 	--tag-line: black;
-	--header-size: 2.6rem;
 }
 
-html,
-body {
-	font-family: var(--text-family);
-	margin: 0;
+* {
+	scrollbar-color: var(--scrollbar-front) var(--scrollbar-back);
+	image-rendering: pixelated;
+	overscroll-behavior-y: none;
 }
 
 ::selection {
-	background: cyan;
+	background: var(--selection-fill);
+	color: var(--selection-line);
+}
+
+html {
+	height: 100%;
+	font-size: 1.2em;
 }
 
 body {
-	contain: layout;
 	min-height: 100vh;
-	padding-bottom: var(--extra-bottom);
 	display: flex;
 	flex-direction: column;
-	gap: 2em;
+	margin: 0;
+	padding-bottom: var(--extra-bottom);
+	flex-direction: column;
+	font-family: var(--text-family);
+	color: var(--page-line);
+	display: flex;
 }
 
 main {
@@ -190,17 +125,6 @@ code {
 	display: none;
 }
 
-* {
-	scrollbar-color: var(--shaded-line) var(--shaded-fill);
-	image-rendering: pixelated;
-}
-
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-}
-
 img,
 video {
 	max-width: 100%;
@@ -208,9 +132,8 @@ video {
 }
 
 a {
-	background: var(--line-fill);
-	color: var(--link-line);
 	text-decoration-skip-ink: auto;
+	color: var(--link-line);
 }
 
 .sr-only {
@@ -221,12 +144,6 @@ a {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }

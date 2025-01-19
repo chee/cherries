@@ -6,55 +6,54 @@ const cherryColour = "#ff2284"
 ---
 
 <header>
-	<nav>
-		<p>
-			<a href="/">
-				<span>🐰</span>
-				<span>chee</span>
-			</a>
-		</p>
-		<p style=`color: ${cherryColour}`>
-			<a href="/cherries/" class="cherry-link">
-				<Cherries cherries={cherryColour} stem="#40dcba" />
-				<span>{SITE_TITLE}</span>
-			</a>
-		</p>
-		<p style="color: white">
-			<a href="https://quietparty.net">
-				<Clouds />
-				<span>quiet party</span>
-			</a>
-		</p>
-	</nav>
+	<a href="/">
+		<span>🐰</span>
+		<span>chee</span>
+	</a>
+	<a href="/cherries/" class="cherry-link" style=`color: ${cherryColour}`>
+		<Cherries cherries={cherryColour} stem="#40dcba" />
+		<span>{SITE_TITLE}</span>
+	</a>
+
+	<a href="https://quietparty.net">
+		<Clouds />
+		<span>quiet party</span>
+	</a>
 </header>
 
 <style>
 	:root {
 		font-family: var(--mono-family);
+		--header-height: 2rem;
 	}
+
 	header {
 		margin: 0;
-		padding: 0 1em;
 		background: black;
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
 		font-weight: 500;
 		color: white;
-	}
-	nav {
+		position: sticky;
+		top: 0;
+		z-index: 100;
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
+		place-items: center;
+		place-content: space-between;
+		line-height: 1.2;
+		padding: 0.5em;
 	}
-	nav a {
+
+	a {
 		color: var(--black);
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
 		display: flex;
 		place-content: center;
 		place-items: center;
-		gap: 0.5ch;
+		gap: 0.5ex;
 	}
-	nav a.active {
+
+	a.active {
 		text-decoration: none;
 		border-bottom-color: var(--accent);
 	}
