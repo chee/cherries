@@ -1,12 +1,11 @@
 ---
-import {type CollectionEntry, getCollection} from "astro:content"
+import {type CollectionEntry} from "astro:content"
 import CherriesLayout from "../layouts/cherries-layout.astro"
 import EleventyCherriesLayout from "../layouts/eleventy-cherries-layout.astro"
 import EleventyCherriesEntry from "../components/entry/eleventy-cherries-entry.astro"
 import {render} from "astro:content"
 import getEntries from "../entries.ts"
 import Entry from "../components/entry/entry.astro"
-import {Debug} from "astro:components"
 
 export async function getStaticPaths() {
 	const entries = await getEntries()

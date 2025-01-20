@@ -16,6 +16,8 @@ export const getStaticPaths = async function getStaticPaths() {
 	})
 }
 
+export const paths = await getStaticPaths()
+
 const {tag} = Astro.params
 ---
 

@@ -8,6 +8,7 @@ const entries = defineCollection({
 	schema: context =>
 		z.object({
 			title: z.string().optional(),
+			titleHTML: z.string().optional(),
 			description: z.string().optional(),
 			date: z.coerce.date(),
 			updated: z.coerce.date().optional(),
@@ -15,7 +16,14 @@ const entries = defineCollection({
 			draft: z.boolean().optional(),
 			timezone: z.string().optional(),
 			dateLocale: z.string().optional(),
-			opengraphImageURL: z.string().optional(),
+
+			opengraph: z
+				.object({
+					title: z.string().optional(),
+					description: z.string().optional(),
+					image: context.image().optional(),
+				})
+				.optional(),
 			song: z
 				.object({
 					art: context.image().optional(),

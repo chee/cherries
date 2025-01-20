@@ -10,6 +10,8 @@ import lychee from "./lychee-theme.ts"
 import civet from "@danielx/civet/astro"
 import fs from "fs"
 
+import node from "@astrojs/node"
+
 const base64Loader = {
 	name: "base64-loader",
 	/**
@@ -29,9 +31,28 @@ const base64Loader = {
 	},
 }
 
+const bytesLoader = {
+	name: "bytes-loader",
+	/**
+	 *
+	 * @param {any} _
+	 * @param {string} id
+	 * @returns
+	 */
+	transform(_, id) {
+		const [path, query] = id.split("?")
+		if (query != "bytes") return null
+
+		const data = fs.readFileSync(path)
+
+		return `export default Uint8Array.from([${Array.from(data)}])`
+	},
+}
+
 // https://astro.build/config
 export default defineConfig({
 	site: "https://chee.party",
+
 	integrations: [
 		mdx({shikiConfig: {theme: lychee}, optimize: true}),
 		sitemap(),
@@ -40,20 +61,31 @@ export default defineConfig({
 		}),
 		solid(),
 	],
+
 	vite: {
-		plugins: [yaml(), wasm(), base64Loader],
+		plugins: [yaml(), wasm(), base64Loader, bytesLoader],
 	},
+
 	markdown: {
 		shikiConfig: {
 			theme: lychee,
 		},
 	},
+
 	experimental: {
 		contentIntellisense: true,
 		svg: true,
 	},
+
 	prefetch: {
 		prefetchAll: true,
 		defaultStrategy: "viewport",
 	},
+	experimental: {
+		clientPrerender: true,
+	},
+
+	adapter: node({
+		mode: "standalone",
+	}),
 })

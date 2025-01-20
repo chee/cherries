@@ -60,3 +60,8 @@
 	font-display: fallback;
 	src: url("/fonts/iosevka-qp-bolditalic.woff2") format("woff2");
 }
+@font-face {
+	font-family: "ITC Garamond STD Book Narrow";
+	font-display: fallback;
+	src: url("/fonts/itc-garamond-std-book-narrow.woff2") format("woff2");
+}
