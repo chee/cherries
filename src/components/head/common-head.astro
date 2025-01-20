@@ -13,9 +13,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
 const {title, description} = Astro.props
 
-import fallbackOpengraphImage from "../../opengraph/fallback.jpg"
+const fallbackOpengraphImage = new URL(
+	Astro.url.pathname + ".og.png",
+	Astro.site
+)
 
-const opengraphImage = Astro.props.opengraph?.image || fallbackOpengraphImage
+const opengraphImage =
+	Astro.props.opengraph?.image?.src || fallbackOpengraphImage
 ---
 
 <meta charset="utf-8" />
@@ -90,12 +94,12 @@ const opengraphImage = Astro.props.opengraph?.image || fallbackOpengraphImage
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 {description && <meta property="og:description" content={description} />}
-<meta property="og:image" content={opengraphImage.src} />
+<meta property="og:image" content={opengraphImage} />
 
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 {description && <meta property="twitter:description" content={description} />}
-<meta property="twitter:image" content={opengraphImage.src} />
+<meta property="twitter:image" content={opengraphImage} />
 <MouseTrail />
 <slot />

@@ -4,20 +4,14 @@ import {html} from "satori-html"
 import {stripHtml as stripHTML} from "string-strip-html"
 import background from "../opengraph/background.jpg?base64"
 import font from "../opengraph/itc-garamond-std-book-narrow.otf?bytes"
+import fallback from "../opengraph/fallback.jpg?bytes"
 import getEntries from "../entries.ts"
-import {render, type CollectionEntry} from "astro:content"
+import {type CollectionEntry} from "astro:content"
 export const prerender = false
 
 async function getOpengraphText(post: CollectionEntry<EntryCollectionName>) {
 	let html = post?.rendered?.html
 	let data = post.data ?? {}
-
-	console.log("before:", post)
-	if (post.deferredRender) {
-		const rendered = await render(post)
-		console.log(rendered)
-	}
-	console.log("after:", post.body?.length)
 
 	let firstline = stripHTML(html ?? "").result
 	firstline = firstline.split(".")[0]
@@ -51,7 +45,6 @@ async function getOpengraphText(post: CollectionEntry<EntryCollectionName>) {
 }
 
 export const GET: APIRoute = async ({params, rewrite, redirect}) => {
-	// const pages = Object.values(import.meta.glob("./**/*", {eager: true}))
 	const entries = await getEntries()
 
 	for (const entry of entries) {
@@ -110,4 +103,6 @@ export const GET: APIRoute = async ({params, rewrite, redirect}) => {
 			})
 		}
 	}
+
+	return new Response(fallback, {headers: {"content-type": "image/jpeg"}})
 }

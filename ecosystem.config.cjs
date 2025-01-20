@@ -16,7 +16,6 @@ module.exports = {
 
 	deploy: {
 		production: {
-			key: "www-key",
 			user: "www",
 			host: "chee.party",
 			ref: "origin/main",
