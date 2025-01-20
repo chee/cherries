@@ -4,7 +4,7 @@ deploy:
     - echo "-----BEGIN OPENSSH PRIVATE KEY-----" > www-key
     - echo "$secret" >> www-key
     - echo "-----END OPENSSH PRIVATE KEY-----" >> www-key
-    - mkdir -p .ssh
+    - mkdir -p ~/.ssh
     - echo "Host *" > ~/.ssh/config
     - echo "StrictHostKeyChecking no" >> ~/.ssh/config
   script:
