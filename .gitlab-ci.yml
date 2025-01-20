@@ -2,7 +2,7 @@ image: node:22
 deploy:
   script:
     - npm ci
-    - npm build
+    - npm run build
     - echo "-----BEGIN OPENSSH PRIVATE KEY-----" > id
     - echo "$secret" >> id
     - echo "-----END OPENSSH PRIVATE KEY-----" >> id

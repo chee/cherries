@@ -57,11 +57,8 @@ function Playbar(props: {
 		<Slider
 			onChange={values => {
 				props.setTime(values[0])
-				console.log(values[0], "set")
 			}}
-			onChangeEnd={values => {
-				console.log(values[0])
-			}}
+			onChangeEnd={values => {}}
 			class={modifiers("song-playbar", {
 				canplay: props.canplay,
 				canplaythrough: props.canplaythrough,

@@ -10,10 +10,12 @@ export const prerender = false
 
 async function getOpengraphText(post: CollectionEntry<EntryCollectionName>) {
 	let html = post?.rendered?.html
+	let data = post.data ?? {}
 
 	if (post.deferredRender) {
 		const rendered = await render(post)
-		console.log(rendered)
+
+		console.log(rendered, data)
 	}
 	let firstline = stripHTML(html ?? "").result
 	firstline = firstline.split(".")[0]
@@ -21,18 +23,18 @@ async function getOpengraphText(post: CollectionEntry<EntryCollectionName>) {
 		firstline = firstline.slice(0, 74) + "..."
 	}
 
-	const description = (post.data.opengraph?.description ||
-		post?.data?.description ||
+	const description = (data.opengraph?.description ||
+		data?.description ||
 		firstline ||
 		"it's cherries season") as string
 
 	const title = (function () {
-		if (post?.data?.opengraph?.title) {
-			return post.data.opengraph.title
-		} else if (post?.data?.titleHTML) {
-			return post.data.titleHTML
-		} else if (post?.data?.title) {
-			return post?.data?.title
+		if (data?.opengraph?.title) {
+			return data.opengraph.title
+		} else if (data?.titleHTML) {
+			return data.titleHTML
+		} else if (data?.title) {
+			return data?.title
 		} else {
 			try {
 			} catch {
