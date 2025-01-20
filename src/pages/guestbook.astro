@@ -24,11 +24,11 @@ if (Astro.request.method === "POST") {
 				message: message.slice(0, 10240),
 				url: url?.slice(0, 128),
 			})
-			Astro.redirect("/")
 		}
 	} catch (error) {
 		console.error(error)
 	}
+	return Astro.redirect("/guestbook/")
 }
 ---
 
@@ -72,7 +72,7 @@ if (Astro.request.method === "POST") {
 				<p>add a message!</p>
 
 				<section class="form">
-					<form method="POST" enctype="multipart/form-data">
+					<form method="POST">
 						<label>
 							<span>name</span>
 							<input name="name" required maxlength="256" />
