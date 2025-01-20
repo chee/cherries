@@ -24,6 +24,7 @@ if (Astro.request.method === "POST") {
 				message: message.slice(0, 10240),
 				url: url?.slice(0, 128),
 			})
+			Astro.redirect("/")
 		}
 	} catch (error) {
 		console.error(error)
@@ -53,7 +54,7 @@ if (Astro.request.method === "POST") {
 							return (
 								<section class="message">
 									<header>
-										<div>{url ? <a href={url}>{name}</a> : {name}}</div>
+										<div>{url ? <a href={url}>{name}</a> : name}</div>
 										<time
 											class="dt-published"
 											datetime={timestamp.toISOString()}>
