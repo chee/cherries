@@ -1,6 +1,7 @@
 module.exports = {
 	apps: [
 		{
+			name: "cherries",
 			script: "dist/server/entry.mjs",
 			watch: ".",
 		},
