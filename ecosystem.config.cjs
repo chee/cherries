@@ -9,11 +9,9 @@ module.exports = {
 
 	env_production: {
 		NODE_ENV: "production",
-		ASTRO_DATABASE_FILE: "prod.db",
 	},
 	env_development: {
 		NODE_ENV: "development",
-		ASTRO_DATABASE_FILE: "dev.db",
 	},
 
 	deploy: {
