@@ -12,80 +12,83 @@ import fs from "fs"
 
 import node from "@astrojs/node"
 
+import db from "@astrojs/db";
+
 const base64Loader = {
-	name: "base64-loader",
-	/**
-	 *
-	 * @param {any} _
-	 * @param {string} id
-	 * @returns
-	 */
-	transform(_, id) {
-		const [path, query] = id.split("?")
-		if (query != "base64") return null
+    name: "base64-loader",
+    /**
+     *
+     * @param {any} _
+     * @param {string} id
+     * @returns
+     */
+    transform(_, id) {
+        const [path, query] = id.split("?")
+        if (query != "base64") return null
 
-		const data = fs.readFileSync(path)
-		const base64 = data.toString("base64")
+        const data = fs.readFileSync(path)
+        const base64 = data.toString("base64")
 
-		return `export default '${base64}';`
-	},
+        return `export default '${base64}';`
+    },
 }
 
 const bytesLoader = {
-	name: "bytes-loader",
-	/**
-	 *
-	 * @param {any} _
-	 * @param {string} id
-	 * @returns
-	 */
-	transform(_, id) {
-		const [path, query] = id.split("?")
-		if (query != "bytes") return null
+    name: "bytes-loader",
+    /**
+     *
+     * @param {any} _
+     * @param {string} id
+     * @returns
+     */
+    transform(_, id) {
+        const [path, query] = id.split("?")
+        if (query != "bytes") return null
 
-		const data = fs.readFileSync(path)
+        const data = fs.readFileSync(path)
 
-		return `export default Uint8Array.from([${Array.from(data)}])`
-	},
+        return `export default Uint8Array.from([${Array.from(data)}])`
+    },
 }
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://chee.party",
+    site: "https://chee.party",
 
-	integrations: [
-		mdx({shikiConfig: {theme: lychee}, optimize: true}),
-		sitemap(),
-		civet({
-			ts: "preserve",
-		}),
-		solid(),
-	],
+    integrations: [
+      mdx({shikiConfig: {theme: lychee}, optimize: true}),
+      sitemap(),
+      civet({
+          ts: "preserve",
+      }),
+      solid(),
+      db(),
+    ],
 
-	vite: {
-		plugins: [yaml(), wasm(), base64Loader, bytesLoader],
-	},
+    vite: {
+        plugins: [yaml(), wasm(), base64Loader, bytesLoader],
+    },
 
-	markdown: {
-		shikiConfig: {
-			theme: lychee,
-		},
-	},
+    markdown: {
+        shikiConfig: {
+            theme: lychee,
+        },
+    },
 
-	experimental: {
-		contentIntellisense: true,
-		svg: true,
-	},
+    experimental: {
+        contentIntellisense: true,
+        svg: true,
+    },
 
-	prefetch: {
-		prefetchAll: true,
-		defaultStrategy: "viewport",
-	},
-	experimental: {
-		clientPrerender: true,
-	},
+    prefetch: {
+        prefetchAll: true,
+        defaultStrategy: "viewport",
+    },
+    experimental: {
+        clientPrerender: true,
+    },
 
-	adapter: node({
-		mode: "standalone",
-	}),
+    adapter: node({
+        mode: "standalone",
+    }),
 })

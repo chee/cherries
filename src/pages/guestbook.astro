@@ -1,0 +1,318 @@
+---
+import CommonHead from "../components/head/common-head.astro"
+import Header from "../components/header/header.astro"
+import Footer from "../components/footer/footer.astro"
+import {SITE_TITLE, SITE_DESCRIPTION} from "../consts"
+import {db, Guestbook as guestbooktable} from "astro:db"
+export const prerender = false
+const guestbook = await db.select().from(guestbooktable)
+if (Astro.request.method === "POST") {
+	try {
+		const formdata = await Astro.request.formData()
+		const name = formdata.get("name")
+		const message = formdata.get("message")
+		const url = formdata.get("url")
+		if (formdata.get("email")) {
+			console.error(
+				`somebody tried to send an illegal message! sneakY!!`,
+				formdata
+			)
+			return
+		}
+		if (typeof name === "string" && typeof message === "string") {
+			await db.insert(guestbooktable).values({
+				name: name.slice(0, 256),
+				message: message.slice(0, 10240),
+				url: url?.slice(0, 128),
+			})
+		}
+	} catch (error) {
+		console.error(error)
+	}
+}
+---
+
+<!doctype html>
+<html lang="en-CA" class="root">
+	<head>
+		<CommonHead title={SITE_TITLE} description={SITE_DESCRIPTION}>
+			<slot name="importmap" slot="importmap" />
+			<slot name="head" />
+		</CommonHead>
+	</head>
+	<body class="body">
+		<Header />
+
+		<main>
+			<center>
+				<p>you've discovered...</p>
+				<h1>the chee.party guestbook</h1>
+				{
+					guestbook
+						.sort((a, b) => +b.timestamp - +a.timestamp)
+						.map(({name, message, timestamp, url}) => {
+							return (
+								<section class="message">
+									<header>
+										<div>{url ? <a href={url}>{name}</a> : {name}}</div>
+										<time
+											class="dt-published"
+											datetime={timestamp.toISOString()}>
+											{timestamp.toLocaleTimeString("en-ca")}
+											{timestamp.toLocaleDateString("en-ca")}
+										</time>
+									</header>
+
+									<pre>{message}</pre>
+								</section>
+							)
+						})
+				}
+
+				<p>add a message!</p>
+
+				<section class="form">
+					<form method="POST" enctype="multipart/form-data">
+						<label>
+							<span>name</span>
+							<input name="name" required maxlength="256" />
+						</label>
+
+						<label>
+							<span>url <span style="color: #999">(optional)</span></span>
+							<input name="url" type="url" aria-hidden="true" maxlength="128" />
+						</label>
+
+						<label aria-hidden="true">
+							<span>e-mail <span style="color: #999">(optional)</span></span>
+							<input
+								name="email"
+								type="email"
+								aria-hidden="true"
+								tabindex="-1"
+							/>
+						</label>
+
+						<label>
+							<span>message</span>
+							<textarea
+								rows="7"
+								name="message"
+								required
+								placeholder="heho"
+								maxlength="10240"></textarea>
+						</label>
+
+						<button type="submit"> tell everyone you existed</button>
+					</form>
+				</section>
+			</center>
+		</main>
+
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.root {
+		background: var(--carribean-current);
+		--scrollbar-back: #fcda40;
+		--scrollbar-front: #fcfcfc;
+	}
+
+	form {
+		display: flex;
+		flex-direction: column;
+	}
+
+	pre {
+		margin-top: 0.5em;
+		font-size: 0.8em;
+	}
+
+	.message table {
+		color: color-mix(in srgb, black 75%, white);
+	}
+
+	.toast {
+		background: rgb(226 0 121);
+		margin: 1em;
+		padding: 1em;
+		box-shadow:
+			-2px 2px white,
+			2px -2px white,
+			-2px -2px white,
+			2px 2px white;
+		font-weight: bold;
+		width: 10em;
+		margin: 1em auto;
+		border-radius: 8px;
+		color: white;
+	}
+
+	main center {
+		color: white;
+		font-family: "Comic Sans MS", "Comic Sans", "Marker Felt", "Bradley Hand",
+			fantasy;
+		font-weight: bold;
+		font-size: 1.4em;
+		display: flex;
+		flex-direction: column;
+		margin: auto;
+		place-items: center;
+		place-content: center;
+		height: 100%;
+		padding: 1rem;
+		gap: 2em;
+		margin-top: 1em;
+		h1 {
+			background: linear-gradient(
+				to right,
+				rgb(255 30 45),
+				#ff0,
+				lime,
+				aqua,
+				rgb(0, 183, 255),
+				rgb(255 0 255),
+				rgb(255 0 136)
+			);
+			font-size: 2.4em;
+			background-clip: text;
+			color: transparent;
+			padding-bottom: 0.5em;
+			text-shadow: 0 2px 4px #00000033;
+		}
+		> section {
+			color: black;
+			display: flex;
+			flex-direction: column;
+
+			border-radius: 8px;
+			border: 1px solid;
+			padding: 1em;
+			box-shadow:
+				-1px -1px black,
+				2px 2px black,
+				3px 3px black,
+				4px 4px black,
+				5px 5px black;
+			background: white;
+			position: relative;
+			text-align: left;
+			width: 47ex;
+			max-width: 100%;
+
+			header {
+				font-size: 16px;
+				font-weight: 300;
+				.name {
+					font-weight: 500;
+				}
+			}
+
+			time {
+				font-size: 14px;
+			}
+
+			textarea,
+			pre {
+				text-wrap-style: pretty;
+				white-space: pre-wrap;
+				font-family: "American Typewriter", "Courier New", Courier, monospace;
+				font-weight: 400;
+			}
+
+			--fill-bottom: white;
+
+			&::after {
+				content: "";
+				display: block;
+				position: absolute;
+			}
+
+			&:nth-child(even)::after {
+				bottom: 0;
+				left: -4px;
+				border-right-color: var(--fill-bottom);
+				border-left: 0;
+				border-bottom: 0;
+			}
+
+			&:nth-child(odd)::after {
+				bottom: 0;
+				right: -4px;
+				border-left-color: var(--fill-bottom);
+				border-right: 0;
+				border-bottom: 0;
+			}
+		}
+
+		label {
+			span {
+				font-weight: 200;
+				padding-bottom: 4px;
+			}
+			display: grid;
+			margin-bottom: 1em;
+		}
+
+		input,
+		textarea {
+			border: 1px solid black;
+			border-radius: 4px;
+			padding: 0.5rem;
+		}
+
+		[type="submit"] {
+			background: #23efbc;
+
+			padding: 0.25em;
+			color: black;
+			font-weight: 400;
+			font-size: 1em;
+			width: 100%;
+
+			box-shadow:
+				1px 1px 0 black,
+				2px 2px 0 black,
+				3px 3px 0 black,
+				4px 4px 0 black;
+			position: relative;
+
+			border-radius: 8px;
+			&:focus,
+			&:hover {
+				box-shadow:
+					-1px -1px 0 white,
+					1px 1px 0 black,
+					2px 2px 0 black,
+					3px 3px 0 black,
+					4px 4px 0 black,
+					5px 5px 0 black,
+					6px 6px 0 black;
+
+				top: -2px;
+				left: -2px;
+			}
+			&:active {
+				box-shadow: none;
+				top: 1px;
+				left: 1px;
+				box-shadow: inset 1px 1px 0 black;
+				border: 1px solid;
+			}
+		}
+
+		input[type="submit"]::hover {
+			background: color-mix(in srgb, #33ffcc, white);
+		}
+
+		label[aria-hidden="true"] {
+			opacity: 0;
+			height: 0;
+			overflow: hidden;
+			padding: 0;
+			margin: 0;
+		}
+	}
+</style>
