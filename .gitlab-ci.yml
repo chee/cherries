@@ -3,9 +3,9 @@ deploy:
   before_script:
     - "command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )"
     - eval $(ssh-agent -s)
-    - chmod 400 "$SSH_PRIVATE_KEY"
-    - ssh-add "$SSH_PRIVATE_KEY"
-    - cp "$SSH_PRIVATE_KEY" www-key
+    - chmod 400 "$SSH_KEY"
+    - ssh-add "$SSH_KEY"
+    - cp "$SSH_KEY" www-key
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
