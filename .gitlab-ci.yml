@@ -1,10 +1,15 @@
 image: node:22
 deploy:
   before_script:
-    - echo "-----BEGIN OPENSSH PRIVATE KEY-----\n$secret\n-----END OPENSSH PRIVATE KEY-----" | ssh-add
+    - "command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )"
+    - eval $(ssh-agent -s)
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+    - cp "$SSH_PRIVATE_KEY" www-key
     - mkdir -p ~/.ssh
-    - echo "Host *" > ~/.ssh/config
-    - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+    - chmod 700 ~/.ssh
+    - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
   script:
     - npm i -g pm2
     - pm2 deploy ecosystem.config.cjs production
