@@ -1,7 +1,6 @@
 image: node:22
 deploy:
   script:
-    - npm i -g pm2
     - pm2 deploy ecosystem.config.cjs production
   cache:
     key:
