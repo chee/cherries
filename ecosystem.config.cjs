@@ -23,7 +23,7 @@ module.exports = {
 			path: "/srv/www/cherries/",
 			"pre-deploy-local": "echo yay",
 			"post-deploy":
-				"npm install && npm run build && pm2 reload ecosystem.config.js --env production",
+				"npm install && npm run build && pm2 reload ecosystem.config.cjs --env production",
 			"pre-setup": "echo yay",
 		},
 	},
