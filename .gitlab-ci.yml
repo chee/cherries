@@ -5,6 +5,7 @@ deploy:
     - echo "$secret" >> www-key
     - echo "-----END OPENSSH PRIVATE KEY-----" >> www-key
     - mkdir -p ~/.ssh
+    - chmod 600 www-key
     - echo "Host *" > ~/.ssh/config
     - echo "StrictHostKeyChecking no" >> ~/.ssh/config
   script:
