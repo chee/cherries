@@ -12,11 +12,13 @@ async function getOpengraphText(post: CollectionEntry<EntryCollectionName>) {
 	let html = post?.rendered?.html
 	let data = post.data ?? {}
 
+	console.log("before:", post)
 	if (post.deferredRender) {
 		const rendered = await render(post)
-
-		console.log(rendered, data)
+		console.log(rendered)
 	}
+	console.log("after:", post.body?.length)
+
 	let firstline = stripHTML(html ?? "").result
 	firstline = firstline.split(".")[0]
 	if (firstline.length > 80) {
