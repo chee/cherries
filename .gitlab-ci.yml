@@ -1,16 +1,9 @@
-image: node:alpine
+image: node:22
 deploy:
   before_script:
     - echo "-----BEGIN OPENSSH PRIVATE KEY-----" > www-key
     - echo "$secret" >> www-key
     - echo "-----END OPENSSH PRIVATE KEY-----" >> www-key
-    - "which ssh-agent || ( apk add --update openssh )"
-    - mkdir -p ~/.ssh
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - apk add --update bash
-    - apk add --update git
-    - eval $(ssh-agent -s)
-    - ssh-add
   script:
     - npm i -g pm2
     - pm2 deploy ecosystem.config.cjs production
