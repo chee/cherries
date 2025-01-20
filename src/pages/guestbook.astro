@@ -2,7 +2,6 @@
 import CommonHead from "../components/head/common-head.astro"
 import Header from "../components/header/header.astro"
 import Footer from "../components/footer/footer.astro"
-import {SITE_TITLE, SITE_DESCRIPTION} from "../consts"
 import {db, Guestbook as guestbooktable} from "astro:db"
 export const prerender = false
 const guestbook = await db.select().from(guestbooktable)
@@ -35,7 +34,7 @@ if (Astro.request.method === "POST") {
 <!doctype html>
 <html lang="en-CA" class="root">
 	<head>
-		<CommonHead title={SITE_TITLE} description={SITE_DESCRIPTION}>
+		<CommonHead title={"guestbook | 🍒"} description="sign the guestbook!">
 			<slot name="importmap" slot="importmap" />
 			<slot name="head" />
 		</CommonHead>
