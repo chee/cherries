@@ -19,7 +19,7 @@ module.exports = {
 			user: "www",
 			host: "chee.party",
 			ref: "origin/main",
-			repo: "https://gitlab.com/chee/cherries.git",
+			repo: "https://gitlab.com/chee/cherries.git/",
 			path: "/srv/www/cherries/",
 			"pre-deploy-local": "echo yay",
 			"post-deploy":
