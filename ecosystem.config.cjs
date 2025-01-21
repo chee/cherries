@@ -6,14 +6,12 @@ module.exports = {
 			watch: ".",
 		},
 	],
-
 	env_production: {
 		NODE_ENV: "production",
 	},
 	env_development: {
 		NODE_ENV: "development",
 	},
-
 	deploy: {
 		production: {
 			user: "www",
@@ -22,7 +20,6 @@ module.exports = {
 			repo: "https://gitlab.com/chee/cherries.git/",
 			path: "/srv/www/cherries/",
 			"pre-deploy-local": "echo yay",
-			"pre-deploy": "git lfs install",
 			"post-deploy":
 				"npm install && cp astro.db .. && npm run build -- --outDir=new && cp ../astro.db . && rm -rf old && mv dist old && mv new dist && rm -rf old && pm2 reload ecosystem.config.cjs --env production",
 			"pre-setup": "echo yay",

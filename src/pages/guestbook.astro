@@ -30,12 +30,17 @@ if (Astro.request.method === "POST") {
 	}
 	return Astro.redirect("/guestbook/")
 }
+import opengraphImage from "../opengraph/guestbook.webp"
 ---
 
 <!doctype html>
 <html lang="en-CA" class="root">
 	<head>
-		<CommonHead title={"guestbook | 🍒"} description="sign the guestbook!">
+		<CommonHead
+			title={"guestbook | 🍒"}
+			description="sign the guestbook!"
+			opengraph={{image: opengraphImage}}
+		>
 			<slot name="importmap" slot="importmap" />
 			<slot name="head" />
 		</CommonHead>

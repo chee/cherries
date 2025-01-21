@@ -13,7 +13,11 @@ const {title, description} = Astro.props
 
 <html lang="en-CA" class="cherries">
 	<head>
-		<CommonHead title={title ?? ""} description={description ?? ""}>
+		<CommonHead
+			{...Astro.props}
+			title={title ?? ""}
+			description={description ?? ""}
+		>
 			<slot name="importmap" slot="importmap" />
 			<slot name="head" />
 		</CommonHead>
