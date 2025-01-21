@@ -24,7 +24,7 @@ module.exports = {
 			"pre-deploy-local": "echo yay",
 			"pre-deploy": "git lfs install",
 			"post-deploy":
-				"npm install && npm run build -- --outDir=new && rm -rf old && mv dist old && mv new dist && mv old/astro.db new && rm -r old && pm2 reload ecosystem.config.cjs --env production",
+				"npm install && cp astro.db .. && npm run build -- --outDir=new && cp ../astro.db . && rm -rf old && mv dist old && mv new dist && rm -rf old && pm2 reload ecosystem.config.cjs --env production",
 			"pre-setup": "echo yay",
 		},
 	},
