@@ -18,7 +18,7 @@ module.exports = {
 			host: "chee.party",
 			ref: "origin/main",
 			repo: "https://gitlab.com/chee/cherries.git/",
-			path: "/srv/www/cherries/",
+			path: "/srv/www/chee.party/cherries/",
 			"pre-deploy-local": "echo yay",
 			"post-deploy":
 				"npm install && cp astro.db .. && npm run build -- --outDir=new && cp ../astro.db . && rm -rf old && mv dist old && mv new dist && rm -rf old && pm2 reload ecosystem.config.cjs --env production",
