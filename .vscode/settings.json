@@ -1,0 +1,7 @@
+{
+	"workbench.colorTheme": "Cherry Midnight",
+	"editor.formatOnType": true,
+	"[commonlisp]": {
+		"editor.wordSeparators": "`|;:'\",()"
+	}
+}
