@@ -21,7 +21,7 @@ module.exports = {
 			path: "/srv/www/chee.party/cherries/",
 			"pre-deploy-local": "echo yay",
 			"post-deploy":
-				"pnpm install && cp astro.db .. && pnpm build -- --outDir=new && cp ../astro.db . && rm -rf old && mv dist old && mv new dist && rm -rf old && pm2 reload ecosystem.config.cjs --env production",
+				"pnpm install && cp astro.db .. && pnpm build --outDir=new && cp ../astro.db . && rm -rf old && mv dist old && mv new dist && rm -rf old && pm2 reload ecosystem.config.cjs --env production",
 			"pre-setup": "echo yay",
 		},
 	},
